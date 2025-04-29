@@ -4,6 +4,6 @@ const app = express();
 app.use(express.json());
 // Rutas de prueba
 app.get("/", (req, res) => {
-    res.send("Bienvenido a la Posada del Lobo Blanco 🐺");
+    res.send("Bienvenido a la Posada del Lobo Blanco ");
 });
 export default app;
