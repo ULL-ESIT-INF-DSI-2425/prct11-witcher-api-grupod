@@ -27,3 +27,33 @@ export const createHunter = async (req: Request, res: Response): Promise<Respons
       res.status(500).json({ message: 'Error creando cazador' });
     }
 };
+
+// GET /hunters/:id
+export const getHunterById = async (req: Request, res: Response) => {
+  // TODO: Obtener cazador por ID
+};
+
+// GET /hunters/search/by-name?name=...
+export const getHunterByName = async (req: Request, res: Response) => {
+  // TODO: Obtener cazador por nombre
+};
+
+// PUT /hunters/:id
+export const updateHunterById = async (req: Request, res: Response) => {
+  // TODO: Actualizar cazador por ID
+};
+
+// PUT /hunters/search/by-name?name=...
+export const updateHunterByName = async (req: Request, res: Response) => {
+  // TODO: Actualizar cazador por nombre
+};
+
+// DELETE /hunters/:id
+export const deleteHunterById = async (req: Request, res: Response) => {
+  // TODO: Borrar cazador por ID
+};
+
+// DELETE /hunters/search/by-name?name=...
+export const deleteHunterByName = async (req: Request, res: Response) => {
+  // TODO: Borrar cazador por nombre
+};
