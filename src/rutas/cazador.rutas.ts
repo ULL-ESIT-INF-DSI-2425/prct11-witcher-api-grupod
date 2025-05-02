@@ -7,19 +7,10 @@ router.get('/', getAllHunters);
 router.post('/', createHunter);
 
 export default router;
-
 */
 import { Router } from 'express';
-import {
-  getAllHunters,
-  createHunter,
-  getHunterById,
-  getHunterByName,
-  updateHunterById,
-  updateHunterByName,
-  deleteHunterById,
-  deleteHunterByName
-} from '../controladores/cazador.controlador.js';
+import { getAllHunters, createHunter, getHunterById, getHunterByName, updateHunterById,
+         updateHunterByName, deleteHunterById, deleteHunterByName } from '../controladores/cazador.controlador.js';
 
 const router = Router();
 

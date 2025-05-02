@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 
-export const getAllTransactions = async (req: Request, res: Response) => {};
+export const getAllTransactions = async (req: Request, res: Response) => {
+  
+};
 
 export const createTransaction = async (req: Request, res: Response) => {};
 
