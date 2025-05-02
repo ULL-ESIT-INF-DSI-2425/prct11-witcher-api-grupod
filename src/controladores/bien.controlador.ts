@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { RequestHandler } from 'express';
-
 import { Good } from '../modelos/bien.modelo.js';
 
 // Controlador para manejar las operaciones CRUD de bienes

@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { Hunter } from '../modelos/cazador.modelo.js';
 
-// GET: obtener todos los cazadores
-export const getAllHunters = async (req: Request, res: Response) => {
+// Controlador para manejar las operaciones CRUD de cazadores
+
+// Obtener todos los cazadores
+export const getAllHunters: RequestHandler = async (req, res) => {
   try {
     const hunters = await Hunter.find();
     res.json(hunters);
@@ -11,32 +14,30 @@ export const getAllHunters = async (req: Request, res: Response) => {
   }
 };
 
-// POST: crear un cazador nuevo 
-export const createHunter = async (req: Request, res: Response): Promise<Response | undefined> => {
+// Crear un nuevo cazador
+export const createHunter: RequestHandler = async (req, res) => {
   try {
     const { name, level, specialization } = req.body;
-
     if (!name || !level) {
-      return res.status(400).json({ message: 'Nombre y nivel son obligatorios' });
+      res.status(400).json({ message: 'Nombre y nivel son obligatorios' });
+      return;
     }
-
     const newHunter = new Hunter({ name, level, specialization });
     const savedHunter = await newHunter.save();
-
     res.status(201).json(savedHunter);
   } catch (error) {
     res.status(500).json({ message: 'Error creando cazador' });
   }
 };
 
-// GET /hunters/:id
-export const getHunterById = async (req: Request, res: Response) => {
-  // TODO: Obtener cazador por ID
+// Obtener un cazador por ID /hunters/:id
+export const getHunterById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const hunter = await Hunter.findById(id);
     if (!hunter) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
     res.json(hunter);
   } catch (error) {
@@ -44,29 +45,29 @@ export const getHunterById = async (req: Request, res: Response) => {
   }
 };
 
-// GET /hunters/search/by-name?name=...
-export const getHunterByName = async (req: Request, res: Response) => {
-  // TODO: Obtener cazador por nombre
+// Obtener cazadores por nombre /hunters/search/by-name?name=...
+export const getHunterByName: RequestHandler = async (req, res) => {
   try {
     const { name } = req.query;
-    const Hunters = await Hunter.find({ name });
-    if (!Hunters || Hunters.length === 0) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+    const hunters = await Hunter.find({ name });
+    if (!hunters || hunters.length === 0) {
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
-    res.json(Hunters);
+    res.json(hunters);
   } catch (error) {
     res.status(500).json({ message: 'Error buscando cazador' });
   }
 };
 
-// PUT /hunters/:id
-export const updateHunterById = async (req: Request, res: Response) => {
-  // TODO: Actualizar cazador por ID
+// Actualizar un cazador por ID /hunters/:id
+export const updateHunterById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedHunter = await Hunter.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedHunter) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
     res.json(updatedHunter);
   } catch (error) {
@@ -74,14 +75,14 @@ export const updateHunterById = async (req: Request, res: Response) => {
   }
 };
 
-// PUT /hunters/search/by-name?name=...
-export const updateHunterByName = async (req: Request, res: Response) => {
-  // TODO: Actualizar cazador por nombre
+// Actualizar un cazador por nombre /hunters/search/by-name?name=...
+export const updateHunterByName: RequestHandler = async (req, res) => {
   try {
     const { name } = req.query;
     const updatedHunter = await Hunter.findOneAndUpdate({ name }, req.body, { new: true });
     if (!updatedHunter) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
     res.json(updatedHunter);
   } catch (error) {
@@ -89,14 +90,14 @@ export const updateHunterByName = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE /hunters/:id
-export const deleteHunterById = async (req: Request, res: Response) => {
-  // TODO: Borrar cazador por ID
+// Eliminar un cazador por ID /hunters/:id
+export const deleteHunterById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedHunter = await Hunter.findByIdAndDelete(id);
     if (!deletedHunter) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
     res.json({ message: 'Cazador eliminado' });
   } catch (error) {
@@ -104,14 +105,14 @@ export const deleteHunterById = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE /hunters/search/by-name?name=...
-export const deleteHunterByName = async (req: Request, res: Response) => {
-  // TODO: Borrar cazador por nombre
+// Eliminar un cazador por nombre /hunters/search/by-name?name=...
+export const deleteHunterByName: RequestHandler = async (req, res) => {
   try {
     const { name } = req.query;
     const deletedHunter = await Hunter.findOneAndDelete({ name });
     if (!deletedHunter) {
-      return res.status(404).json({ message: 'Cazador no encontrado' });
+      res.status(404).json({ message: 'Cazador no encontrado' });
+      return;
     }
     res.json({ message: 'Cazador eliminado' });
   } catch (error) {
