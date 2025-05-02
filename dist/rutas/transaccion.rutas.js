@@ -1,0 +1,11 @@
+import express from 'express';
+import * as transactionController from '../controladores/transaccion.controlador.js';
+const router = express.Router();
+router.get('/', transactionController.getAllTransactions);
+router.post('/', transactionController.createTransaction);
+router.get('/search/by-buyer', transactionController.getTransactionsByBuyer);
+router.get('/search/by-date', transactionController.getTransactionsByDate);
+router.get('/:id', transactionController.getTransactionById);
+router.put('/:id', transactionController.updateTransactionById);
+router.delete('/:id', transactionController.deleteTransactionById);
+export default router;

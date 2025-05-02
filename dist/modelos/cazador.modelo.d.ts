@@ -1,34 +1,23 @@
-import { Schema } from 'mongoose';
-export declare const Hunter: import("mongoose").Model<{
+/**import { Schema, model } from 'mongoose';
+
+const HunterSchema = new Schema({
+  name: { type: String, required: true },
+  level: { type: Number, required: true },
+  specialization: { type: String }
+});
+
+export const Hunter = model('Hunter', HunterSchema);
+*/
+import mongoose, { Document } from 'mongoose';
+export interface IHunter extends Document {
     name: string;
     level: number;
-    specialization?: string | null | undefined;
-}, {}, {}, {}, import("mongoose").Document<unknown, {}, {
-    name: string;
-    level: number;
-    specialization?: string | null | undefined;
-}, {}> & {
-    name: string;
-    level: number;
-    specialization?: string | null | undefined;
-} & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
-    __v: number;
-}, Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
-    name: string;
-    level: number;
-    specialization?: string | null | undefined;
-}, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
-    name: string;
-    level: number;
-    specialization?: string | null | undefined;
-}>, {}> & import("mongoose").FlatRecord<{
-    name: string;
-    level: number;
-    specialization?: string | null | undefined;
+    specialization?: string;
+    origin?: string;
+    createdAt: Date;
+}
+export declare const Hunter: mongoose.Model<IHunter, {}, {}, {}, mongoose.Document<unknown, {}, IHunter, {}> & IHunter & Required<{
+    _id: unknown;
 }> & {
-    _id: import("mongoose").Types.ObjectId;
-} & {
     __v: number;
-}>>;
+}, any>;
