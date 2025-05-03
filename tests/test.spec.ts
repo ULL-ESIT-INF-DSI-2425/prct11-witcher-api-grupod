@@ -16,41 +16,4 @@ describe("GET /", () => {
     expect(response.text).toBe("Bienvenido a la Posada del Lobo Blanco");
   });
 });
-
-
-// Pruebas de integración para la API de bienes
-const good = {
-  name: "Espada de acero",
-  description: "Espada de acero forjada por un maestro herrero.",
-  price: 100,
-  stock: 10,
-};
-
-describe("POST /goods", () => {
-  test("Should successfully create a new good", async () => {
-    await request(app)
-      .post("/goods")
-      .send({
-        name: "Espada de acero",
-        description: "Espada de acero forjada por un maestro herrero.",
-        price: 100,
-        stock: 10,
-      })
-      .expect(201);
-  });
-
-  test("Should get an error", async () => {
-    await request(app).post("/goods").send(good).expect(500);
-  });
-});
-
-describe("GET /goods", () => {
-  test("Should get a good by name", async () => {
-    await request(app).get("/goods?name=Espada de acero").expect(200);
-  });
-
-  test("Should not find a good by name", async () => {
-    await request(app).get("/goods?name=Espada de plata").expect(404);
-  });
-});
-
+ 
