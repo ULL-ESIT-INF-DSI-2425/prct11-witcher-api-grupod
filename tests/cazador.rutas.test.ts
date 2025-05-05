@@ -20,18 +20,18 @@ beforeEach(async () => {
 
 describe('Rutas de cazadores', () => {
     // test('debería crear un nuevo cazador', async () => {
-    //     const res = await request(app).post('/hunters').send({
-    //     name: 'Geralt',
-    //     level: 5,
-    //     specialization: 'Witcher',
+    //     const res = await request(app).post('/hunters/').send({
+    //         name: 'Geralt',
+    //         level: 5,
+    //         specialization: 'Witcher',
     //     });
     //     expect(res.status).toBe(201);
     //     expect(res.body.name).toBe('Geralt');
     // });
 
-    // test('debería obtener todos los cazadores', async () => {
+    // test('Obtener todos los cazadores', async () => {
     //     await Hunter.create({ name: 'Yennefer', level: 4, specialization: 'Sorceress' });
-    //     const res = await request(app).get('/hunters');
+    //     const res = await request(app).get('/hunters/');
     //     expect(res.status).toBe(200);
     //     expect(res.body[0].name).toBe('Yennefer');
     //     expect(res.body.length).toBe(1);

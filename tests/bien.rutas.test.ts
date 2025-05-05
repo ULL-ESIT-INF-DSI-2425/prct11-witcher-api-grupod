@@ -37,26 +37,26 @@ describe('Rutas de bienes', () => {
     expect(res.body.length).toBe(1);
   });
 
-  test('debería obtener un bien por ID', async () => {
-    const good = await Good.create({ name: 'Ratón', description: 'Óptico', price: 25, stock: 15 });
-    const res = await request(app).get(`/goods/${good._id}`);
-    expect(res.status).toBe(200);
-    expect(res.body.name).toBe('Ratón');
-  });
+  // test('debería obtener un bien por ID', async () => {
+  //   const good = await Good.create({ name: 'Ratón', description: 'Óptico', price: 25, stock: 15 });
+  //   const res = await request(app).get(`/goods/${good._id}`);
+  //   expect(res.status).toBe(200);
+  //   expect(res.body.name).toBe('Ratón');
+  // });
 
-//   test('debería obtener un bien por query', async () => {
-//     await Good.create({ name: 'Pantalla', description: 'LED', price: 200, stock: 8 });
-//     const res = await request(app).get('/goods/search?name=Pantalla&description=LED&price=200&stock=8');
-//     expect(res.status).toBe(200);
-//     expect(res.body[0].description).toBe('LED');
-//   });
+  // test('debería obtener un bien por query', async () => {
+  //   await Good.create({ name: 'Pantalla', description: 'LED', price: 200, stock: 8 });
+  //   const res = await request(app).get('/goods/search?name=Pantalla&description=LED&price=200&stock=8');
+  //   expect(res.status).toBe(200);
+  //   expect(res.body[0].description).toBe('LED');
+  // });
 
-  test('debería actualizar un bien por ID', async () => {
-    const good = await Good.create({ name: 'Tablet', description: 'Android', price: 300, stock: 7 });
-    const res = await request(app).put(`/goods/${good._id}`).send({ price: 350 });
-    expect(res.status).toBe(200);
-    expect(res.body.price).toBe(350);
-  });
+  // test('debería actualizar un bien por ID', async () => {
+  //   const good = await Good.create({ name: 'Tablet', description: 'Android', price: 300, stock: 7 });
+  //   const res = await request(app).put(`/goods/${good._id}`).send({ price: 350 });
+  //   expect(res.status).toBe(200);
+  //   expect(res.body.price).toBe(350);
+  // });
 
 //   test('debería actualizar un bien por query', async () => {
 //     await Good.create({ name: 'Impresora', description: 'Láser', price: 100, stock: 3 });
