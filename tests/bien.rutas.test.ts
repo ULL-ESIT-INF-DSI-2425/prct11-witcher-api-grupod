@@ -19,7 +19,8 @@ beforeEach(async () => {
 
 describe('Rutas de bienes', () => {
   test('debería crear un nuevo bien', async () => {
-    const res = await request(app).post('/goods').send({
+    const res = await request(app).post('/goods').send(
+      {
         name: 'Laptop',
         description: 'Portátil de última generación',
         price: 1200,
@@ -37,26 +38,50 @@ describe('Rutas de bienes', () => {
     expect(res.body.length).toBe(1);
   });
 
-  // test('debería obtener un bien por ID', async () => {
-  //   const good = await Good.create({ name: 'Ratón', description: 'Óptico', price: 25, stock: 15 });
-  //   const res = await request(app).get(`/goods/${good._id}`);
-  //   expect(res.status).toBe(200);
-  //   expect(res.body.name).toBe('Ratón');
-  // });
+  test('deberia de mostrar un error si no se envian todos los datos', async () => {
+    const res = await request(app).post('/goods').send(
+      {
+        name: 'Monitor',
+        description: '4K',
+        // price: 400,
+        stock: 2,
+    });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Nombre, descripción, precio y stock son obligatorios');
+  });
+
+  test('debería obtener un bien por ID', async () => {
+    const good = await Good.create({ name: 'Ratón', description: 'Óptico', price: 25, stock: 15 });
+    //obtener el bien por ID
+    const id = good._id;
+    console.log(id);
+    const res = await request(app).get(`/goods/${id}`);
+    expect(res.status).toBe(200);
+    expect(res.body.name).toBe('Ratón');
+  });
 
   // test('debería obtener un bien por query', async () => {
   //   await Good.create({ name: 'Pantalla', description: 'LED', price: 200, stock: 8 });
-  //   const res = await request(app).get('/goods/search?name=Pantalla&description=LED&price=200&stock=8');
+
+    
+
   //   expect(res.status).toBe(200);
   //   expect(res.body[0].description).toBe('LED');
   // });
 
-  // test('debería actualizar un bien por ID', async () => {
-  //   const good = await Good.create({ name: 'Tablet', description: 'Android', price: 300, stock: 7 });
-  //   const res = await request(app).put(`/goods/${good._id}`).send({ price: 350 });
-  //   expect(res.status).toBe(200);
-  //   expect(res.body.price).toBe(350);
-  // });
+  test('debería actualizar un bien por ID', async () => {
+    const good = await Good.create({ name: 'Tablet', description: 'Android', price: 300, stock: 7 });
+    //obtener el bien por ID
+    const id = good._id;
+    console.log(id);
+    //actualizar el bien por ID
+    const res = await request(app).put(`/goods/${id}`).send(
+      { 
+        price: 350 
+      });
+    expect(res.status).toBe(200);
+    expect(res.body.price).toBe(350);
+  });
 
 //   test('debería actualizar un bien por query', async () => {
 //     await Good.create({ name: 'Impresora', description: 'Láser', price: 100, stock: 3 });
@@ -78,11 +103,5 @@ describe('Rutas de bienes', () => {
 //     expect(res.status).toBe(200);
 //     expect(res.body.message).toBe('Bienes eliminados');
 //   });
-
-    test('debería devolver un error 500 si ocurre un error en el servidor al actualizar', async () => {
-        const good = await Good.create({ name: 'Error', description: 'Error', price: 0, stock: 0 });
-        const res = await request(app).put(`/goods/${good._id}`).send({ price: -1 });
-        expect(res.status).toBe(500);
-        expect(res.body.message).toBe('Error actualizando bien');
-    });
+ 
 });

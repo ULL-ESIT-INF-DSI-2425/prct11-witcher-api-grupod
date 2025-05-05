@@ -41,26 +41,33 @@ export const getGoodById = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
-// Obtener un bien por query /goods?name=nombre&description=descripcion&price=precio&stock=stock
+// Obtener un bien por query /goods/search?name=nombre&description=descripcion&price=precio&stock=stock
 export const getGoodByQuery = async (req, res) => {
     try {
-        const query1 = {};
-        query1.name = req.query.name;
-        query1.description = req.query.description;
-        query1.price = req.query.price;
-        query1.stock = req.query.stock;
-        if (!query1.name && !query1.description && !query1.price && !query1.stock) {
+        if (!req.query.name && !req.query.description && !req.query.price && !req.query.stock) {
             res.status(400).json({ message: 'Por favor, proporciona al menos un parámetro de búsqueda' });
+            return;
         }
+        const query1 = {};
+        if (req.query.name)
+            query1.name = req.query.name;
+        if (req.query.description)
+            query1.description = req.query.description;
+        if (req.query.price)
+            query1.price = req.query.price;
+        if (req.query.stock)
+            query1.stock = req.query.stock;
         const goods = await Good.find(query1);
         if (goods.length === 0) {
             res.status(404).json({ message: 'No se encontraron bienes que coincidan con la búsqueda' });
+            return;
         }
         res.json(goods);
     }
     catch (error) {
         res.status(500).json({ message: 'Error buscando bien' });
     }
+    return;
 };
 // Actualizar un bien por ID /goods/:id
 export const updateGoodById = async (req, res) => {
