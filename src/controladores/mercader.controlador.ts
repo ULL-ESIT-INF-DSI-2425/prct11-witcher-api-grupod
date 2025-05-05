@@ -1,6 +1,28 @@
 import { RequestHandler } from 'express';
 import { Merchant } from '../modelos/mercader.modelo.js';
 
+// Para la busqueda mediante query string
+// export function findSpell(name: string = "" , type: string = "", incantation: string= ""): Promise<request.Response> {
+//   const url = `https://wizard-world-api.herokuapp.com/Spells?Name=${name}&Type=${type}&Incantation=${incantation}`;
+//   return new Promise<request.Response>((resolve, reject) => {
+//     request(
+//       { url: url, json: true}, 
+//       (error: Error, response: request.Response, body) => {
+//         if (error) {
+//           return reject(new Error("Error during the HTTP request: " + error.message));
+//         } 
+//         if (!body || body.length === 0) {
+//           return reject(new Error("No spell information found."));
+//         }
+//         else {
+//           return resolve(body);
+//         }
+//       },
+//     );
+//   });
+// };
+
+
 // Controlador para manejar las operaciones CRUD de mercaderes
 
 // Obtener todos los mercaderes
@@ -20,18 +42,21 @@ export const getAllMerchants: RequestHandler = async (req, res) => {
 // Crear un nuevo mercader
 export const createMerchant: RequestHandler = async (req, res) => {
   try {
-    const { name, level, specialization } = req.body;
-    if (!name || !level) {
-      res.status(400).json({ message: 'Nombre y nivel son obligatorios' });
+    const name = req.body.name;
+    const location = req.body.location;
+    const specialization = req.body.specialization;
+    if (!name || !location || !specialization) {
+      res.status(400).json({ message: 'Nombre, ubicación y especialización son obligatorios' });
       return;
     }
-    const newMerchant = new Merchant({ name, level, specialization });
+    const newMerchant = new Merchant({ name, location, specialization });
     const savedMerchant = await newMerchant.save();
     res.status(201).json(savedMerchant);
   } catch (error) {
     res.status(500).json({ message: 'Error creando mercader' });
   }
 };
+
 
 // Obtener un mercader por ID /merchants/:id
 export const getMerchantById: RequestHandler = async (req, res) => {
@@ -53,14 +78,15 @@ export const getMerchantByName: RequestHandler = async (req, res) => {
   try {
     const { name } = req.query;
     const nameString = Array.isArray(name) ? name[0] : name;
-    const merchants = await Merchant.find({ name: nameString });
+    const merchants = await Merchant.find({ name: { $regex: nameString, $options: 'i' } });
     if (!merchants || merchants.length === 0) {
-      res.status(404).json({ message: 'Mercader no encontrado' });
+      res.status(404).json({ message: 'No se encontraron mercaderes con ese nombre' });
       return;
     }
     res.json(merchants);
-  } catch (error) {
-    res.status(500).json({ message: 'Error buscando mercader' });
+  }
+  catch (error) {
+    res.status(500).json({ message: 'Error buscando mercaderes' });
   }
 };
 

@@ -14,7 +14,7 @@ export interface IHunter extends Document {
     level: number;
     specialization?: string;
     origin?: string;
-    createdAt?: Date;
+    createdAt: Date;
 }
 export declare const Hunter: mongoose.Model<IHunter, {}, {}, {}, mongoose.Document<unknown, {}, IHunter, {}> & IHunter & Required<{
     _id: unknown;
