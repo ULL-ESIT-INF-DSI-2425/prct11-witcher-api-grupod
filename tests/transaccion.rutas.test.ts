@@ -22,15 +22,20 @@ describe('Rutas de transacciones', () => {
     
     // test('debería crear una nueva transacción', async () => {
     //     const res = await request(app).post('/transactions/').send({
-    //         hunterId: '60d5f484f1c2b8b8a4e4f4f4',
-    //         merchantId: '60d5f484f1c2b8b8a4e4f4f5',
-    //         goodId: '60d5f484f1c2b8b8a4e4f4f6',
-    //         quantity: 2,
-    //         totalPrice: 200,
+    //         buyerType: 'hunter',
+    //         buyer: '60d5f484f1c2b8b8a4e4f4f4',
+    //         goods: [{ good: '60d5f484f1c2b8b8a4e4f4f6', quantity: 2 }],
+    //         totalAmount: 200
     //     });
     //     expect(res.status).toBe(201);
-    //     expect(res.body.hunterId).toBe('60d5f484f1c2b8b8a4e4f4f4');
+    //     expect(res.body.buyerType).toBe('hunter');
+    //     expect(res.body.buyer).toBe('60d5f484f1c2b8b8a4e4f4f4');
+    //     expect(res.body.goods[0].good).toBe('60d5f484f1c2b8b8a4e4f4f6');
+    //     expect(res.body.goods[0].quantity).toBe(2);
+    //     expect(res.body.totalAmount).toBe(200);
+    //     expect(res.body.date).toBeDefined();
     // });
+
 
     // test('debería obtener todas las transacciones', async () => {
     //     await Transaction.create({ 
