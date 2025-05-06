@@ -45,29 +45,87 @@ export const getGoodById: RequestHandler = async (req, res) => {
 };
 
 // Obtener un bien por query /goods/search?name=nombre&description=descripcion&price=precio&stock=stock
-export const getGoodByQuery: RequestHandler = async (req, res) => {
+export const getGoodByName: RequestHandler = async (req, res) => {
     try {
-    
-        if (!req.query.name && !req.query.description && !req.query.price && !req.query.stock) {
-            res.status(400).json({ message: 'Por favor, proporciona al menos un parámetro de búsqueda' });
-            return;
-        }
-        const query1: any = {};
-        if (req.query.name) query1.name = req.query.name;
-        if (req.query.description) query1.description = req.query.description;
-        if (req.query.price) query1.price = req.query.price;
-        if (req.query.stock) query1.stock = req.query.stock;
-        const goods = await Good.find(query1);
-        if (goods.length === 0) {
-            res.status(404).json({ message: 'No se encontraron bienes que coincidan con la búsqueda' });
+        const { name, description, price, stock } = req.query;
+        const query: any = {};
+        if (name) query.name = name;
+        if (description) query.description = description;
+        if (price) query.price = price;
+        if (stock) query.stock = stock;
+
+        const goods = await Good.find(query);
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
         res.json(goods);
     } catch (error) {
         res.status(500).json({ message: 'Error buscando bien' });
     }
-    return;
+};
 
+export const getGoodbyDescription: RequestHandler = async (req, res) => {
+    try {
+        const { description } = req.query;
+        const goods = await Good.find({ description });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        res.json(goods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error buscando bien' });
+    }
+};
+
+export const getGoodByPrice: RequestHandler = async (req, res) => {
+    try {
+        const { price } = req.query;
+        const goods = await Good.find({ price });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        res.json(goods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error buscando bien' });
+    }
+};
+
+export const getGoodByStock: RequestHandler = async (req, res) => {
+    try {
+        const { stock } = req.query;
+        const goods = await Good.find({ stock });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        res.json(goods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error buscando bien' });
+    }
+};
+
+// Esta función combina las búsquedas por nombre, descripción, precio y stock en una sola
+export const getGoodbyQuery: RequestHandler = async (req, res) => {
+    try {
+        const { name, description, price, stock } = req.query;
+        const query: any = {};
+        if (name) query.name = name;
+        if (description) query.description = description;
+        if (price) query.price = price;
+        if (stock) query.stock = stock;
+
+        const goods = await Good.find(query);
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        res.json(goods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error buscando bien' });
+    }
 };
 
 // Actualizar un bien por ID /goods/:id
@@ -95,33 +153,143 @@ export const updateGoodById: RequestHandler = async (req, res) => {
     }
 };
 
-// Actualizar un bien por query /goods?name=nombre&description=descripcion&price=precio&stock=stock
-export const updateGoodByQuery: RequestHandler = async (req, res) => {
+export const updateGoodByName: RequestHandler = async (req, res) => {
     try {
-        const query1: any = {};
-        query1.name = req.query.name;
-        query1.description = req.query.description;
-        query1.price = req.query.price;
-        query1.stock = req.query.stock;
-        if (!query1.name && !query1.description && !query1.price && !query1.stock) {
-            res.status(400).json({ message: 'Por favor, proporciona al menos un parámetro de búsqueda' });
+      const filter: any = {};
+      if (req.query.name) filter.name = req.query.name;
+  
+      const update: any = {};
+      const { name, description, price, stock } = req.body;
+      if (name) update.name = name;
+      if (description) update.description = description;
+      if (price) update.price = price;
+      if (stock) update.stock = stock;
+  
+      const goods = await Good.find(filter);
+      if (!goods || goods.length === 0) {
+        return res.status(404).json({ message: 'Bien no encontrado' });
+      }
+  
+      const updatedGoods = [];
+      for (const good of goods) {
+        Object.assign(good, update);
+        await good.save();
+        updatedGoods.push(good);
+      }
+  
+      res.json(updatedGoods);
+    } catch (error) {
+      res.status(500).json({ message: 'Error actualizando bien' });
+    }
+};
+
+export const updateGoodByDescription: RequestHandler = async (req, res) => {
+    try {
+        const filter: any = {};
+        if (req.query.description) filter.description = req.query.description;
+        const update: any = {};
+        const { name, description, price, stock } = req.body;
+        if (name) update.name = name;
+        if (description) update.description = description;
+        if (price) update.price = price;
+        if (stock) update.stock = stock;
+        const goods = await Good.find(filter);
+        if (!goods || goods.length === 0) {
+            return res.status(404).json({ message: 'Bien no encontrado' });
         }
-        const goods = await Good.find(query1);
-        if (goods.length === 0) {
-            res.status(404).json({ message: 'No se encontraron bienes que coincidan con la búsqueda' });
-        }
+        const updatedGoods = [];
         for (const good of goods) {
-            if (req.body.name) good.name = req.body.name;
-            if (req.body.description) good.description = req.body.description;
-            if (req.body.price) good.price = req.body.price;
-            if (req.body.stock) good.stock = req.body.stock;
+            Object.assign(good, update);
             await good.save();
+            updatedGoods.push(good);
         }
-        res.json(goods);
+        res.json(updatedGoods);
     } catch (error) {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+
+export const updateGoodByPrice: RequestHandler = async (req, res) => {
+    try {
+        const filter: any = {};
+        if (req.query.price) filter.price = req.query.price;
+        const update: any = {};
+        const { name, description, price, stock } = req.body;
+        if (name) update.name = name;
+        if (description) update.description = description;
+        if (price) update.price = price;
+        if (stock) update.stock = stock;
+        const goods = await Good.find(filter);
+        if (!goods || goods.length === 0) {
+            return res.status(404).json({ message: 'Bien no encontrado' });
+        }
+        const updatedGoods = [];
+        for (const good of goods) {
+            Object.assign(good, update);
+            await good.save();
+            updatedGoods.push(good);
+        }
+        res.json(updatedGoods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error actualizando bien' });
+    }
+};
+
+export const updateGoodByStock: RequestHandler = async (req, res) => {
+    try {
+        const filter: any = {};
+        if (req.query.stock) filter.stock = req.query.stock;
+        const update: any = {};
+        const { name, description, price, stock } = req.body;
+        if (name) update.name = name;
+        if (description) update.description = description;
+        if (price) update.price = price;
+        if (stock) update.stock = stock;
+        const goods = await Good.find(filter);
+        if (!goods || goods.length === 0) {
+            return res.status(404).json({ message: 'Bien no encontrado' });
+        }
+        const updatedGoods = [];
+        for (const good of goods) {
+            Object.assign(good, update);
+            await good.save();
+            updatedGoods.push(good);
+        }
+        res.json(updatedGoods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error actualizando bien' });
+    }
+};
+
+export const updateGoodByQuery: RequestHandler = async (req, res) => {
+    try {
+        const filter: any = {};
+        if (req.query.name) filter.name = req.query.name;
+        if (req.query.description) filter.description = req.query.description;
+        if (req.query.price) filter.price = req.query.price;
+        if (req.query.stock) filter.stock = req.query.stock;
+        const update: any = {};
+        const { name, description, price, stock } = req.body;
+        if (name) update.name = name;
+        if (description) update.description = description;
+        if (price) update.price = price;
+        if (stock) update.stock = stock;
+        const goods = await Good.find(filter);
+        if (!goods || goods.length === 0) {
+            return res.status(404).json({ message: 'Bien no encontrado' });
+        }
+        const updatedGoods = [];
+        for (const good of goods) {
+            Object.assign(good, update);
+            await good.save();
+            updatedGoods.push(good);
+        }
+        res.json(updatedGoods);
+    } catch (error) {
+        res.status(500).json({ message: 'Error actualizando bien' });
+    }
+};
+  
 
 // Eliminar un bien por ID /goods/:id
 export const deleteGoodById: RequestHandler = async (req, res) => {
@@ -138,25 +306,88 @@ export const deleteGoodById: RequestHandler = async (req, res) => {
     }
 };
 
-// Eliminar un bien por query /goods?name=nombre&description=descripcion&price=precio&stock=stock
+export const deleteGoodByName: RequestHandler = async (req, res) => {   
+    try {
+        const { name, description, price, stock } = req.query;
+        const query: any = {};
+        if (name) query.name = name;
+        if (description) query.description = description;
+        if (price) query.price = price;
+        if (stock) query.stock = stock;
+
+        const goods = await Good.find(query);
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        await Good.deleteMany(query);
+        res.json({ message: 'Bien(es) eliminado(s)' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error eliminando bien' });
+    }
+};
+
+export const deleteGoodByDescription: RequestHandler = async (req, res) => {
+    try {
+        const { description } = req.query;
+        const goods = await Good.find({ description });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        await Good.deleteMany({ description });
+        res.json({ message: 'Bien(es) eliminado(s)' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error eliminando bien' });
+    }
+}
+
+export const deleteGoodByPrice: RequestHandler = async (req, res) => {
+    try {
+        const { price } = req.query;
+        const goods = await Good.find({ price });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        await Good.deleteMany({ price });
+        res.json({ message: 'Bien(es) eliminado(s)' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error eliminando bien' });
+    }
+};
+
+export const deleteGoodByStock: RequestHandler = async (req, res) => {
+    try {
+        const { stock } = req.query;
+        const goods = await Good.find({ stock });
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
+        }
+        await Good.deleteMany({ stock });
+        res.json({ message: 'Bien(es) eliminado(s)' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error eliminando bien' });
+    }
+};
+
 export const deleteGoodByQuery: RequestHandler = async (req, res) => {
     try {
-        const query1: any = {};
-        query1.name = req.query.name;
-        query1.description = req.query.description;
-        query1.price = req.query.price;
-        query1.stock = req.query.stock;
-        if (!query1.name && !query1.description && !query1.price && !query1.stock) {
-            res.status(400).json({ message: 'Por favor, proporciona al menos un parámetro de búsqueda' });
+        const { name, description, price, stock } = req.query;
+        const query: any = {};
+        if (name) query.name = name;
+        if (description) query.description = description;
+        if (price) query.price = price;
+        if (stock) query.stock = stock;
+
+        const goods = await Good.find(query);
+        if (!goods || goods.length === 0) {
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
         }
-        const goods = await Good.find(query1);
-        if (goods.length === 0) {
-            res.status(404).json({ message: 'No se encontraron bienes que coincidan con la búsqueda' });
-        }
-        for (const good of goods) {
-            await Good.findByIdAndDelete(good._id);
-        }
-        res.json({ message: 'Bienes eliminados' });
+        await Good.deleteMany(query);
+        res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {
         res.status(500).json({ message: 'Error eliminando bien' });
     }

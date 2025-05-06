@@ -3,7 +3,7 @@ import { RequestHandler } from 'express';
 export declare const getAllGoods: (req: Request, res: Response) => Promise<void>;
 export declare const createGood: RequestHandler;
 export declare const getGoodById: RequestHandler;
-export declare const getGoodByQuery: RequestHandler;
+export declare const getGoodByName: RequestHandler;
 export declare const updateGoodById: RequestHandler;
 export declare const updateGoodByQuery: RequestHandler;
 export declare const deleteGoodById: RequestHandler;
