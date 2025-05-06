@@ -17,16 +17,22 @@ export const getAllTransactions = async (req, res) => {
 // Crear una nueva transacción
 export const createTransaction = async (req, res) => {
     try {
-        const buyerType = req.body.buyer;
-        const buyer = req.body.seller;
+        const buyerType = req.body.buyerType;
+        const buyer = req.body.buyer;
         const goods = req.body.goods;
         const totalAmount = req.body.totalAmount;
-        // Validar que los campos requeridos estén presentes
-        if (!buyer || !buyerType || !goods || !totalAmount) {
-            res.status(400).json({ message: 'Buyer, buyerType, goods y totalAmount son obligatorios' });
+        const date = req.body.date;
+        if (!buyerType || !buyer || !goods || !totalAmount || !date) {
+            res.status(400).json({ message: 'Tipo de comprador, comprador, bienes, monto total y fecha son obligatorios' });
             return;
         }
-        const newTransaction = new Transaction({ buyer, buyerType, goods, totalAmount });
+        const newTransaction = new Transaction({
+            buyerType,
+            buyer,
+            goods,
+            totalAmount,
+            date,
+        });
         const savedTransaction = await newTransaction.save();
         res.status(201).json(savedTransaction);
     }
