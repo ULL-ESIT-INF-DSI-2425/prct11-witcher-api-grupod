@@ -167,7 +167,8 @@ export const updateGoodByName: RequestHandler = async (req, res) => {
   
       const goods = await Good.find(filter);
       if (!goods || goods.length === 0) {
-        return res.status(404).json({ message: 'Bien no encontrado' });
+        res.status(404).json({ message: 'Bien no encontrado' });
+        return;
       }
   
       const updatedGoods = [];
@@ -195,7 +196,8 @@ export const updateGoodByDescription: RequestHandler = async (req, res) => {
         if (stock) update.stock = stock;
         const goods = await Good.find(filter);
         if (!goods || goods.length === 0) {
-            return res.status(404).json({ message: 'Bien no encontrado' });
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
         }
         const updatedGoods = [];
         for (const good of goods) {
@@ -221,7 +223,8 @@ export const updateGoodByPrice: RequestHandler = async (req, res) => {
         if (stock) update.stock = stock;
         const goods = await Good.find(filter);
         if (!goods || goods.length === 0) {
-            return res.status(404).json({ message: 'Bien no encontrado' });
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
         }
         const updatedGoods = [];
         for (const good of goods) {
@@ -247,7 +250,8 @@ export const updateGoodByStock: RequestHandler = async (req, res) => {
         if (stock) update.stock = stock;
         const goods = await Good.find(filter);
         if (!goods || goods.length === 0) {
-            return res.status(404).json({ message: 'Bien no encontrado' });
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return
         }
         const updatedGoods = [];
         for (const good of goods) {
@@ -276,7 +280,8 @@ export const updateGoodByQuery: RequestHandler = async (req, res) => {
         if (stock) update.stock = stock;
         const goods = await Good.find(filter);
         if (!goods || goods.length === 0) {
-            return res.status(404).json({ message: 'Bien no encontrado' });
+            res.status(404).json({ message: 'Bien no encontrado' });
+            return;
         }
         const updatedGoods = [];
         for (const good of goods) {
