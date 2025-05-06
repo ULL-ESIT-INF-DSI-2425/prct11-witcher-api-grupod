@@ -25,12 +25,6 @@ export const createHunter = async (req, res) => {
             level,
             specialization,
         });
-        // Validar el cazador
-        const errors = newHunter.validateSync();
-        if (errors) {
-            res.status(400).json({ message: 'Error de validación', errors });
-            return;
-        }
         const savedHunter = await newHunter.save();
         res.status(201).json(savedHunter);
     }

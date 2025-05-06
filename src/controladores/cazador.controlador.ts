@@ -29,13 +29,7 @@ export const createHunter: RequestHandler = async (req, res) => {
       name,
       level,
       specialization,
-    });
-    // Validar el cazador
-    const errors = newHunter.validateSync();
-    if (errors) {
-      res.status(400).json({ message: 'Error de validación', errors });
-      return;
-    }
+    }); 
     const savedHunter = await newHunter.save();
     res.status(201).json(savedHunter);
   } catch (error) {

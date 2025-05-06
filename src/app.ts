@@ -1,10 +1,16 @@
 import express from "express";
+//Base de datos
 import "./config/db.js"
+
+//Rutas
 import cazadorRoutes from "./rutas/cazador.rutas.js";
-// futuras rutas
+
 import mercaderRoutes from "./rutas/mercader.rutas.js";
+
 import bienRoutes from "./rutas/bien.rutas.js";
+
 import transaccionRoutes from "./rutas/transaccion.rutas.js";
+
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 export const app = express();

@@ -1,12 +1,7 @@
 import request from "supertest";
-import app from "../src/app.js";
-import mongoose from "mongoose";
-import { Hunter } from "../src/modelos/cazador.modelo.js"; 
-import { Good } from "../src/modelos/bien.modelo.js";
-import { Merchant } from "../src/modelos/mercader.modelo.js";
-import { Transaction } from "../src/modelos/transaccion.modelo.js";
+import {app} from "../src/app.js";
 
-import { describe, test, expect, beforeAll, afterAll, beforeEach} from "vitest";
+import { describe, test, expect} from "vitest";
 
 
 //Pruebas de integración para la API de la Posada del Lobo Blanco

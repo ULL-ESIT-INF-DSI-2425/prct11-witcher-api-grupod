@@ -1,31 +1,22 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
+
 import { describe, test, beforeAll, afterAll, beforeEach, expect } from 'vitest';
 
-import app from '../src/app.js';
+import {app} from '../src/app.js';
 import { Transaction } from '../src/modelos/transaccion.modelo.js';
 
+beforeEach(async () => {
+    await Transaction.deleteMany({});
+});
 
 describe('Rutas de transacciones', () => {
-    beforeAll(async () => {
-        await mongoose.connect('mongodb://localhost:27017/test-db');
-    });
-    
-    afterAll(async () => {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
-    });
-    
-    beforeEach(async () => {
-        await Transaction.deleteMany({});
-    });
-    
     // test('debería crear una nueva transacción', async () => {
     //     const res = await request(app).post('/transactions/').send({
     //         buyerType: 'hunter',
     //         buyer: '60d5f484f1c2b8b8a4e4f4f4',
     //         goods: [{ good: '60d5f484f1c2b8b8a4e4f4f6', quantity: 2 }],
-    //         totalAmount: 200
+    //         totalAmount: 200,
+    //         date: new Date()
     //     });
     //     expect(res.status).toBe(201);
     //     expect(res.body.buyerType).toBe('hunter');
@@ -35,8 +26,7 @@ describe('Rutas de transacciones', () => {
     //     expect(res.body.totalAmount).toBe(200);
     //     expect(res.body.date).toBeDefined();
     // });
-
-
+ 
     // test('debería obtener todas las transacciones', async () => {
     //     await Transaction.create({ 
     //         hunterId: '60d5f484f1c2b8b8a4e4f4f4', 

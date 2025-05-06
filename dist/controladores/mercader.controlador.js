@@ -1,24 +1,4 @@
 import { Merchant } from '../modelos/mercader.modelo.js';
-// Para la busqueda mediante query string
-// export function findSpell(name: string = "" , type: string = "", incantation: string= ""): Promise<request.Response> {
-//   const url = `https://wizard-world-api.herokuapp.com/Spells?Name=${name}&Type=${type}&Incantation=${incantation}`;
-//   return new Promise<request.Response>((resolve, reject) => {
-//     request(
-//       { url: url, json: true}, 
-//       (error: Error, response: request.Response, body) => {
-//         if (error) {
-//           return reject(new Error("Error during the HTTP request: " + error.message));
-//         } 
-//         if (!body || body.length === 0) {
-//           return reject(new Error("No spell information found."));
-//         }
-//         else {
-//           return resolve(body);
-//         }
-//       },
-//     );
-//   });
-// };
 // Controlador para manejar las operaciones CRUD de mercaderes
 // Obtener todos los mercaderes
 export const getAllMerchants = async (req, res) => {

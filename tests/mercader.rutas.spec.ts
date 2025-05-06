@@ -1,24 +1,14 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import { describe, test, beforeAll, afterAll, beforeEach, expect } from 'vitest';
+import { describe, test, beforeEach, expect } from 'vitest';
 
-import app from '../src/app.js';
+import {app} from '../src/app.js';
 import { Merchant } from '../src/modelos/mercader.modelo.js';
 
-describe('Rutas de mercaderes', () => {
-    beforeAll(async () => {
-        await mongoose.connect('mongodb://localhost:27017/test-db');
-    });
-    
-    afterAll(async () => {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
-    });
-    
-    beforeEach(async () => {
-        await Merchant.deleteMany({});
-    });
-    
+beforeEach(async () => {
+    await Merchant.deleteMany({});
+});
+
+describe('Rutas de mercaderes', () => {    
     test('debería crear un nuevo mercader', async () => {
         const res = await request(app).post('/merchants/').send({
             name: 'Merchant 1',
@@ -28,19 +18,11 @@ describe('Rutas de mercaderes', () => {
         expect(res.status).toBe(201);
         expect(res.body.name).toBe('Merchant 1');
     });
-
-
+ 
     test('debería devolver 400 si faltan campos obligatorios', async () => {
         const res = await request(app).post('/merchants/').send({
             name: 'Merchant 1',
             specialization: 'Trader',
-        });
-        expect(res.status).toBe(400);
-        expect(res.body.message).toBe('Nombre, ubicación y especialización son obligatorios');
-    });
-
-    test('debería devolver 500 si hay un error al crear el mercader', async () => {
-        const res = await request(app).post('/merchants/').send({
         });
         expect(res.status).toBe(400);
         expect(res.body.message).toBe('Nombre, ubicación y especialización son obligatorios');
@@ -52,6 +34,12 @@ describe('Rutas de mercaderes', () => {
         expect(res.status).toBe(200);
         expect(res.body[0].name).toBe('Merchant 2');
         expect(res.body.length).toBe(1);
+    });
+
+    test('debería devolver 404 si no hay mercaderes', async () => {
+        const res = await request(app).get('/merchants/');
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('No se encontraron mercaderes');
     });
 
     test('debería obtener un mercader por ID', async () => {
@@ -147,10 +135,6 @@ describe('Rutas de mercaderes', () => {
         const res = await request(app).delete('/merchants/search/by-name?name=Nonexistent Merchant');
         expect(res.status).toBe(404);
     });
-
-    test('debería devolver 404 al intentar eliminar un mercader que no existe por nombre', async () => {
-        const res = await request(app).delete('/merchants/search/by-name?name=Nonexistent Merchant');
-        expect(res.status).toBe(404);
-    });
+     
 });
 
