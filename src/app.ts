@@ -1,4 +1,5 @@
 import express from "express";
+import "./config/db.js"
 import cazadorRoutes from "./rutas/cazador.rutas.js";
 // futuras rutas
 import mercaderRoutes from "./rutas/mercader.rutas.js";
@@ -6,7 +7,7 @@ import bienRoutes from "./rutas/bien.rutas.js";
 import transaccionRoutes from "./rutas/transaccion.rutas.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
-const app = express();
+export const app = express();
 
 // Middlewares
 app.use(express.json());
@@ -24,5 +25,3 @@ app.get("/", (_req, res) => {
 
 // Middleware de errores
 app.use(errorHandler);
-
-export default app;
