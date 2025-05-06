@@ -8,6 +8,7 @@ import { Transaction } from "../src/modelos/transaccion.modelo.js";
 
 import { describe, test, expect, beforeAll, afterAll, beforeEach} from "vitest";
 
+
 //Pruebas de integración para la API de la Posada del Lobo Blanco
 describe("GET /", () => {
   test("Debería devolver un mensaje de bienvenida", async () => {
@@ -16,4 +17,4 @@ describe("GET /", () => {
     expect(response.text).toBe("Bienvenido a la Posada del Lobo Blanco");
   });
 });
- 
+

@@ -2,7 +2,9 @@
   "exclude": [
     "node_modules",
     "dist",
-    "tests"
+    "tests",
+    "coverage",
+    "node_modules/@types"
   ],
   "compilerOptions": {
     "target": "ES2024",

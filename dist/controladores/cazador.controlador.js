@@ -13,12 +13,24 @@ export const getAllHunters = async (req, res) => {
 // Crear un nuevo cazador
 export const createHunter = async (req, res) => {
     try {
-        const { name, level, specialization } = req.body;
+        const name = req.body.name;
+        const level = req.body.level;
+        const specialization = req.body.specialization;
         if (!name || !level) {
             res.status(400).json({ message: 'Nombre y nivel son obligatorios' });
             return;
         }
-        const newHunter = new Hunter({ name, level, specialization });
+        const newHunter = new Hunter({
+            name,
+            level,
+            specialization,
+        });
+        // Validar el cazador
+        const errors = newHunter.validateSync();
+        if (errors) {
+            res.status(400).json({ message: 'Error de validación', errors });
+            return;
+        }
         const savedHunter = await newHunter.save();
         res.status(201).json(savedHunter);
     }
