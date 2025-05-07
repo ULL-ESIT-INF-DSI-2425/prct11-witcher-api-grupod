@@ -5,21 +5,7 @@ import { Hunter } from '../modelos/cazador.modelo.js';
 import { Good } from '../modelos/bien.modelo.js';
 
 // Controlador para manejar las operaciones CRUD de transacciones
-
-// Obtener todas las transacciones
-export const getAllTransactions: RequestHandler = async (req, res) => {
-  try {
-    const transactions = await Transaction.find();
-    if (!transactions || transactions.length === 0) {
-      res.status(404).json({ message: 'No se encontraron transacciones' });
-      return;
-    }
-    res.json(transactions);
-  } catch (error) {
-    res.status(500).json({ message: 'Error buscando transacciones' });
-  }
-};
-
+ 
 export const createTransaction: RequestHandler = async (req, res) => {
   try {
     const { Type, name_transactor, goods, totalAmount, date, hour } = req.body;
@@ -88,6 +74,21 @@ export const createTransaction: RequestHandler = async (req, res) => {
   }
 };
  
+// Obtener todas las transacciones
+export const getAllTransactions: RequestHandler = async (req, res) => {
+  try {
+    const transactions = await Transaction.find();
+    if (!transactions || transactions.length === 0) {
+      res.status(404).json({ message: 'No se encontraron transacciones' });
+      return;
+    }
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: 'Error buscando transacciones' });
+  }
+};
+
+
 // Obtener una transacción por ID
 export const getTransactionById: RequestHandler = async (req, res) => {
   try {
@@ -121,10 +122,19 @@ export const getTransactionsByBuyer: RequestHandler = async (req, res) => {
 // Obtener transacciones por fecha
 export const getTransactionsByDate: RequestHandler = async (req, res) => {
   try {
-    const { date } = req.query;
-    const transactions = await Transaction.find({ date });
+    const { startDate, endDate, type } = req.query;
+    const query: any = {};
+
+    if (startDate && endDate) {
+      query.date = { $gte: new Date(startDate as string), $lte: new Date(endDate as string) };
+    }
+    if (type) {
+      query.Type = type;
+    }
+
+    const transactions = await Transaction.find(query);
     if (!transactions || transactions.length === 0) {
-      res.status(404).json({ message: 'No se encontraron transacciones para esta fecha' });
+      res.status(404).json({ message: 'No se encontraron transacciones para este rango de fechas o tipo' });
       return;
     }
     res.json(transactions);
@@ -148,17 +158,50 @@ export const updateTransactionById: RequestHandler = async (req, res) => {
   }
 };
 
+
 // Eliminar una transacción por ID
 export const deleteTransactionById: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedTransaction = await Transaction.findByIdAndDelete(id);
-    if (!deletedTransaction) {
+
+    // Buscar la transacción por ID
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
       res.status(404).json({ message: 'Transacción no encontrada' });
       return;
     }
+
+    // Revertir el stock de los bienes involucrados en la transacción
+    for (const item of transaction.goods) {
+      const goodDoc = await Good.findOne({ name: item.good });
+      if (!goodDoc) {
+        res.status(404).json({ message: `Bien no encontrado: ${item.good}` });
+        return;
+      }
+
+      // Actualizar el stock según el tipo de transacción
+      if (transaction.Type === 'hunter') {
+        goodDoc.stock += item.quantity; 
+      } else if (transaction.Type === 'merchant') {
+        goodDoc.stock -= item.quantity;
+      }
+
+      // Validar que el stock no sea negativo
+      if (goodDoc.stock < 0) {
+        res.status(400).json({ message: `Stock negativo no permitido para el bien: ${item.good}` });
+        return;
+      }
+
+      await goodDoc.save();
+    }
+
+    // Eliminar la transacción
+    await Transaction.findByIdAndDelete(id);
     res.json({ message: 'Transacción eliminada exitosamente' });
   } catch (error) {
-    res.status(500).json({ message: 'Error eliminando transacción' });
+    res.status(500).json({
+      message: 'Error eliminando transacción',
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 };
