@@ -3,27 +3,29 @@ import * as transactionController from '../controladores/transaccion.controlador
 
 const router = express.Router();
 
-// Rutas para transacciones
+/** 
+ * Rutas para transacciones
+ * @method GET '/' - Obtener todas las transacciones
+ * @method POST '/' - Crear una nueva transacción
+ * @method GET '/search/by-buyer' - Obtener transacciones por comprador
+ * @method GET '/search/by-date' - Obtener transacciones por fechas
+ * @method GET '/search/by-merchant' - Obtener transacciones por vendedor
+ * @method GET '/:id' - Obtener transacciones por id
+ * @method PUT '/:id' - Actualizar una transacción por ID
+ * @method DELETE '/:id' - Eliminar una transacción por ID
+*/
 
-// Obtener todas las transacciones
 router.get('/', transactionController.getAllTransactions);
 
-// Crear una nueva transacción
 router.post('/', transactionController.createTransaction);
 
-// Obtener transacciones por comprador
 router.get('/search/by-buyer', transactionController.getTransactionsByBuyer);
-
-// Obtener transacciones por fechas
 router.get('/search/by-date', transactionController.getTransactionsByDate);
-
-// Obtener transacciones por id
+router.get('/search/by-merchant', transactionController.getTransactionsByMerchant);
 router.get('/:id', transactionController.getTransactionById);
 
-// Actualizar una transacción por ID
 router.put('/:id', transactionController.updateTransactionById);
 
-// Eliminar una transacción por ID
 router.delete('/:id', transactionController.deleteTransactionById);
 
 export default router;

@@ -1,30 +1,34 @@
+// Archivo principal de la aplicación
+// Importaciones
 import express from "express";
-//Base de datos
-import "./config/db.js"
+import "./config/db.js" // Conexión a la base de datos
 
-//Rutas
 import cazadorRoutes from "./rutas/cazador.rutas.js";
-
 import mercaderRoutes from "./rutas/mercader.rutas.js";
-
 import bienRoutes from "./rutas/bien.rutas.js";
-
 import transaccionRoutes from "./rutas/transaccion.rutas.js";
-
 import { errorHandler } from "./middlewares/errorHandler.js";
 
+// Inicialización de la aplicación
 export const app = express();
 
-// Middlewares
+// Middleware para manejar el cuerpo de las solicitudes
 app.use(express.json());
 
-// Rutas
+/**
+ * Rutas de la API
+ * - /hunters: Rutas para los cazadores
+ * - /merchants: Rutas para los mercaderes
+ * - /goods: Rutas para los bienes
+ * - /transactions: Rutas para las transacciones
+ */
 app.use("/hunters", cazadorRoutes);
 app.use("/merchants", mercaderRoutes);
 app.use("/goods", bienRoutes);
 app.use("/transactions", transaccionRoutes);
 
-// Ruta raíz
+// Ruta de inicio
+// Esta ruta se puede usar para verificar que el servidor está funcionando y para mostrar un mensaje de bienvenida.
 app.get("/", (_req, res) => {
   res.send("Bienvenido a la Posada del Lobo Blanco");
 });

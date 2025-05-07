@@ -1,25 +1,12 @@
 import { Transaction } from '../modelos/transaccion.modelo.js';
 import { Merchant } from '../modelos/mercader.modelo.js';
 import { Hunter } from '../modelos/cazador.modelo.js';
+import { Good } from '../modelos/bien.modelo.js';
 // Controlador para manejar las operaciones CRUD de transacciones
-// Obtener todas las transacciones
-export const getAllTransactions = async (req, res) => {
-    try {
-        const transactions = await Transaction.find();
-        if (!transactions || transactions.length === 0) {
-            res.status(404).json({ message: 'No se encontraron transacciones' });
-            return;
-        }
-        res.json(transactions);
-    }
-    catch (error) {
-        res.status(500).json({ message: 'Error buscando transacciones' });
-    }
-};
 export const createTransaction = async (req, res) => {
     try {
-        const { Type, name_transactor, totalAmount, date, hour } = req.body;
-        if (!Type || !name_transactor || !totalAmount || !date || !hour) {
+        const { Type, name_transactor, goods, totalAmount, date, hour } = req.body;
+        if (!Type || !name_transactor || !goods || !totalAmount || !date || !hour) {
             res.status(400).json({ message: 'Todos los campos son obligatorios' });
             return;
         }
@@ -36,14 +23,30 @@ export const createTransaction = async (req, res) => {
             return;
         }
         if (!transactorDoc) {
+            console.log("transactor");
             res.status(404).json({ message: `Transactor no encontrado: ${name_transactor}` });
+            return;
+        }
+        let goodsDocs = [];
+        // Buscar los bienes según los nombres
+        for (const good of goods) {
+            const goodDoc = await Good.findOne({ name: good.good });
+            if (!goodDoc) {
+                console.log("Bien no encontrado");
+                res.status(404).json({ message: `Bien no encontrado: ${good.good}` });
+                return;
+            }
+            goodsDocs.push({ good: goodDoc.name, quantity: good.quantity });
+        }
+        if (goodsDocs.length === 0) {
+            res.status(400).json({ message: 'No se encontraron bienes válidos' });
             return;
         }
         // Mantenemos el nombre en lugar de ObjectId
         const newTransaction = new Transaction({
             Type,
-            name_transactor: transactorDoc._id, // Aquí guardamos el nombre directamente
-            // goods,  // Asumimos que los goods también están pasados como nombres, sin necesidad de convertir a ObjectId
+            name_transactor: transactorDoc.name, // Aquí guardamos el nombre directamente
+            goods: goodsDocs,
             totalAmount,
             date,
             hour
@@ -59,6 +62,20 @@ export const createTransaction = async (req, res) => {
         }
         res.status(500).json({ message: 'Error creando transacción', error: String(error) });
         return;
+    }
+};
+// Obtener todas las transacciones
+export const getAllTransactions = async (req, res) => {
+    try {
+        const transactions = await Transaction.find();
+        if (!transactions || transactions.length === 0) {
+            res.status(404).json({ message: 'No se encontraron transacciones' });
+            return;
+        }
+        res.json(transactions);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error buscando transacciones' });
     }
 };
 // Obtener una transacción por ID
@@ -83,6 +100,20 @@ export const getTransactionsByBuyer = async (req, res) => {
         const transactions = await Transaction.find({ buyer });
         if (!transactions || transactions.length === 0) {
             res.status(404).json({ message: 'No se encontraron transacciones para este comprador' });
+            return;
+        }
+        res.json(transactions);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error buscando transacciones' });
+    }
+};
+export const getTransactionsByMerchant = async (req, res) => {
+    try {
+        const { name_transactor } = req.query;
+        const transactions = await Transaction.find({ name_transactor });
+        if (!transactions || transactions.length === 0) {
+            res.status(404).json({ message: 'No se encontraron transacciones para este mercader' });
             return;
         }
         res.json(transactions);
@@ -125,14 +156,41 @@ export const updateTransactionById = async (req, res) => {
 export const deleteTransactionById = async (req, res) => {
     try {
         const { id } = req.params;
-        const deletedTransaction = await Transaction.findByIdAndDelete(id);
-        if (!deletedTransaction) {
+        // Buscar la transacción por ID
+        const transaction = await Transaction.findById(id);
+        if (!transaction) {
             res.status(404).json({ message: 'Transacción no encontrada' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        for (const item of transaction.goods) {
+            const goodDoc = await Good.findOne({ name: item.good });
+            if (!goodDoc) {
+                res.status(404).json({ message: `Bien no encontrado: ${item.good}` });
+                return;
+            }
+            // Actualizar el stock según el tipo de transacción
+            if (transaction.Type === 'hunter') {
+                goodDoc.stock += item.quantity;
+            }
+            else if (transaction.Type === 'merchant') {
+                goodDoc.stock -= item.quantity;
+            }
+            // Validar que el stock no sea negativo
+            if (goodDoc.stock < 0) {
+                res.status(400).json({ message: `Stock negativo no permitido para el bien: ${item.good}` });
+                return;
+            }
+            await goodDoc.save();
+        }
+        // Eliminar la transacción
+        await Transaction.findByIdAndDelete(id);
         res.json({ message: 'Transacción eliminada exitosamente' });
     }
     catch (error) {
-        res.status(500).json({ message: 'Error eliminando transacción' });
+        res.status(500).json({
+            message: 'Error eliminando transacción',
+            error: error instanceof Error ? error.message : String(error),
+        });
     }
 };

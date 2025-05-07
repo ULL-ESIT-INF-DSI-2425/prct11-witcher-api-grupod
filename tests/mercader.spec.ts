@@ -1,11 +1,15 @@
 import request from 'supertest';
-import { describe, test, beforeEach, expect } from 'vitest';
+import { describe, test, beforeEach, afterAll, expect } from 'vitest';
 
 import {app} from '../src/app.js';
 import { Merchant } from '../src/modelos/mercader.modelo.js';
 
 beforeEach(async () => {
-    await Merchant.deleteMany({});
+    await Merchant.deleteMany();
+});
+
+afterAll(async () => {
+    await Merchant.deleteMany();
 });
 
 describe('Rutas de mercaderes', () => {    

@@ -1,16 +1,16 @@
-/**import { Schema, model } from 'mongoose';
-
-const HunterSchema = new Schema({
-  name: { type: String, required: true },
-  level: { type: Number, required: true },
-  specialization: { type: String }
-});
-
-export const Hunter = model('Hunter', HunterSchema);
-*/
-
+// File: prct11-witcher-api-grupod/src/modelos/cazador.modelo.ts
 import mongoose, { Schema, Document } from 'mongoose';
 
+/**
+ * Modelo de Cazador
+ * @interface IHunter
+ * @property {string} name - Nombre del cazador
+ * @property {number} level - Nivel del cazador
+ * @property {string} [specialization] - Especialización del cazador
+ * @property {string} [origin] - Origen del cazador
+ * @property {Date} createdAt - Fecha de creación del cazador
+ * @description Este modelo representa a un cazador en el juego, incluyendo su nombre, nivel, especialización y origen.
+ */
 export interface IHunter extends Document {
   name: string;
   level: number;
@@ -19,6 +19,11 @@ export interface IHunter extends Document {
   createdAt: Date;
 }
 
+/**
+ * Esquema de Cazador
+ * @type {Schema}
+ * @description Este esquema define la estructura de un cazador en la base de datos.
+ */
 const HunterSchema: Schema = new Schema<IHunter>({
   name: {
     type: String,

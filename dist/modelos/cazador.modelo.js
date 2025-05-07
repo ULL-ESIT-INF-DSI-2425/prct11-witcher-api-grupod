@@ -1,14 +1,10 @@
-/**import { Schema, model } from 'mongoose';
-
-const HunterSchema = new Schema({
-  name: { type: String, required: true },
-  level: { type: Number, required: true },
-  specialization: { type: String }
-});
-
-export const Hunter = model('Hunter', HunterSchema);
-*/
+// File: prct11-witcher-api-grupod/src/modelos/cazador.modelo.ts
 import mongoose, { Schema } from 'mongoose';
+/**
+ * Esquema de Cazador
+ * @type {Schema}
+ * @description Este esquema define la estructura de un cazador en la base de datos.
+ */
 const HunterSchema = new Schema({
     name: {
         type: String,

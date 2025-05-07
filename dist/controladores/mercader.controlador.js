@@ -1,4 +1,5 @@
 import { Merchant } from '../modelos/mercader.modelo.js';
+import { Transaction } from '../modelos/transaccion.modelo.js';
 // Controlador para manejar las operaciones CRUD de mercaderes
 // Obtener todos los mercaderes
 export const getAllMerchants = async (req, res) => {
@@ -103,6 +104,8 @@ export const deleteMerchantById = async (req, res) => {
             res.status(404).json({ message: 'Mercader no encontrado' });
             return;
         }
+        // Borramos las transacciones asociadas al mercader
+        await Transaction.deleteMany({ name_transactor: deletedMerchant.name });
         res.json({ message: 'Mercader eliminado' });
     }
     catch (error) {
@@ -119,6 +122,8 @@ export const deleteMerchantByName = async (req, res) => {
             res.status(404).json({ message: 'Mercader no encontrado' });
             return;
         }
+        // Borramos las transacciones asociadas al mercader
+        await Transaction.deleteMany({ name_transactor: deletedMerchant.name });
         res.json({ message: 'Mercader eliminado' });
     }
     catch (error) {

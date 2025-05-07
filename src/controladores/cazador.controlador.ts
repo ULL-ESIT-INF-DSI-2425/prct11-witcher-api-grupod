@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { RequestHandler } from 'express';
 import { Hunter } from '../modelos/cazador.modelo.js';
+import { Transaction } from '../modelos/transaccion.modelo.js';
 
 // Controlador para manejar las operaciones CRUD de cazadores
 
@@ -106,6 +107,8 @@ export const deleteHunterById: RequestHandler = async (req, res) => {
       res.status(404).json({ message: 'Cazador no encontrado' });
       return;
     }
+    // Borramos todas las transacciones asociadas al cazador
+    await Transaction.deleteMany({ name_transactor: deletedHunter.name });
     res.json({ message: 'Cazador eliminado' });
   } catch (error) {
     res.status(500).json({ message: 'Error eliminando cazador' });
@@ -121,6 +124,8 @@ export const deleteHunterByName: RequestHandler = async (req, res) => {
       res.status(404).json({ message: 'Cazador no encontrado' });
       return;
     }
+    // Borramos todas las transacciones asociadas al cazador
+    await Transaction.deleteMany({ name_transactor: deletedHunter.name });
     res.json({ message: 'Cazador eliminado' });
   } catch (error) {
     res.status(500).json({ message: 'Error eliminando cazador' });

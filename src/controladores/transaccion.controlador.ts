@@ -119,22 +119,27 @@ export const getTransactionsByBuyer: RequestHandler = async (req, res) => {
   }
 };
 
+export const getTransactionsByMerchant: RequestHandler = async (req, res) => {
+  try {
+    const { name_transactor } = req.query;
+    const transactions = await Transaction.find({ name_transactor });
+    if (!transactions || transactions.length === 0) {
+      res.status(404).json({ message: 'No se encontraron transacciones para este mercader' });
+      return;
+    }
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: 'Error buscando transacciones' });
+  }
+};
+
 // Obtener transacciones por fecha
 export const getTransactionsByDate: RequestHandler = async (req, res) => {
   try {
-    const { startDate, endDate, type } = req.query;
-    const query: any = {};
-
-    if (startDate && endDate) {
-      query.date = { $gte: new Date(startDate as string), $lte: new Date(endDate as string) };
-    }
-    if (type) {
-      query.Type = type;
-    }
-
-    const transactions = await Transaction.find(query);
+    const { date } = req.query;
+    const transactions = await Transaction.find({ date });
     if (!transactions || transactions.length === 0) {
-      res.status(404).json({ message: 'No se encontraron transacciones para este rango de fechas o tipo' });
+      res.status(404).json({ message: 'No se encontraron transacciones para esta fecha' });
       return;
     }
     res.json(transactions);
@@ -182,7 +187,8 @@ export const deleteTransactionById: RequestHandler = async (req, res) => {
       // Actualizar el stock según el tipo de transacción
       if (transaction.Type === 'hunter') {
         goodDoc.stock += item.quantity; 
-      } else if (transaction.Type === 'merchant') {
+      } 
+      else if (transaction.Type === 'merchant') {
         goodDoc.stock -= item.quantity;
       }
 

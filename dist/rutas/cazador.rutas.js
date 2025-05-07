@@ -1,30 +1,26 @@
-/**import { Router } from 'express';
-import { getAllHunters, createHunter } from '../controladores/cazador.controlador.js';
-
-const router = Router();
-
-router.get('/', getAllHunters);
-router.post('/', createHunter);
-
-export default router;
-*/
+// File: src/rutas/cazador.rutas.ts
+//Importar las dependencias necesarias
 import { Router } from 'express';
 import { getAllHunters, createHunter, getHunterById, getHunterByName, updateHunterById, updateHunterByName, deleteHunterById, deleteHunterByName } from '../controladores/cazador.controlador.js';
 const router = Router();
-// Obtener todos los cazadores
+/**
+ * Rutas para la gestión de cazadores
+ * @route /api/hunters
+ * @method GET    /api/hunters          - Obtener todos los cazadores
+ * @method POST   /api/hunters          - Crear un nuevo cazador
+ * @method GET    /api/hunters/:id      - Obtener un cazador por ID
+ * @method GET    /api/hunters/search/by-name?name=Geralt - Obtener un cazador por nombre
+ * @method PUT    /api/hunters/:id      - Actualizar un cazador por ID
+ * @method PUT    /api/hunters/search/by-name?name=Geralt - Actualizar un cazador por nombre
+ * @method DELETE /api/hunters/:id      - Borrar un cazador por ID
+ * @method DELETE /api/hunters/search/by-name?name=Geralt - Borrar un cazador por nombre
+ */
 router.get('/', getAllHunters);
-// Crear un nuevo cazador
 router.post('/', createHunter);
-// Obtener un cazador por ID
 router.get('/:id', getHunterById);
-// Obtener un cazador por nombre (query string: ?name=Geralt)
 router.get('/search/by-name', getHunterByName);
-// Actualizar un cazador por ID
 router.put('/:id', updateHunterById);
-// Actualizar un cazador por nombre (query string: ?name=Geralt)
 router.put('/search/by-name', updateHunterByName);
-// Borrar un cazador por ID
 router.delete('/:id', deleteHunterById);
-// Borrar un cazador por nombre (query string: ?name=Geralt)
 router.delete('/search/by-name', deleteHunterByName);
 export default router;

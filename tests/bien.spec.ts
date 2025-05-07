@@ -15,6 +15,10 @@ beforeEach(async () => {
   await new Good(firstGood).save();
 });
 
+afterAll(async () => {
+  await Good.deleteMany();
+});
+
 describe('Rutas de bienes', () => {
   test('debería crear un nuevo bien', async () => {
     await request(app)

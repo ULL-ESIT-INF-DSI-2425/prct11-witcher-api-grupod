@@ -6,8 +6,11 @@ import {app} from '../src/app.js';
 import { Hunter } from '../src/modelos/cazador.modelo.js';
  
 beforeEach(async () => {
-  await Hunter.deleteMany({});
+  await Hunter.deleteMany();
+});
 
+afterAll(async () => {
+  await Hunter.deleteMany();
 });
 
 describe('Rutas de cazadores', () => {

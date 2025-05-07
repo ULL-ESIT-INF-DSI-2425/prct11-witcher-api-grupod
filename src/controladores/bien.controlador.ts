@@ -1,9 +1,19 @@
 import { Request, Response } from 'express';
 import { RequestHandler } from 'express';
 import { Good } from '../modelos/bien.modelo.js';
+import { Transaction } from '../modelos/transaccion.modelo.js';
 
 // Controlador para manejar las operaciones CRUD de bienes
-// Obtener todos los bienes
+
+/**
+ * Obtiene todos los bienes
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar los bienes
+ * @description Esta función busca todos los bienes en la base de datos y los devuelve
+ * en formato JSON. Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ */
 export const getAllGoods = async (req: Request, res: Response) => {
     try {
         const goods = await Good.find();
@@ -13,7 +23,16 @@ export const getAllGoods = async (req: Request, res: Response) => {
     }
 };
 
-// Crear un nuevo bien
+/**
+ * Crea un nuevo bien
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación   
+ * @throws {Error} - Si ocurre un error al crear el bien
+ * @description Esta función crea un nuevo bien en la base de datos y lo guarda. Si
+ * ocurre un error durante la creación, se devuelve un mensaje de error. Si el bien ya
+ * existe, se devuelve un mensaje de error indicando que el bien ya existe.
+ */
 export const createGood: RequestHandler = async (req, res) => {
     try {
         const { name, description, price, stock } = req.body;
@@ -30,7 +49,17 @@ export const createGood: RequestHandler = async (req, res) => {
     return;
 };
 
-// Obtener un bien por ID /goods/:id
+/**
+ * Obtiene un bien por ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su ID en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {string} req.params.id - El ID del bien a buscar
+ */
 export const getGoodById: RequestHandler = async (req, res) => {
     try {
         const { id } = req.params;
@@ -45,6 +74,22 @@ export const getGoodById: RequestHandler = async (req, res) => {
 };
 
 // Obtener un bien por query /goods/search?name=nombre&description=descripcion&price=precio&stock=stock
+/**
+ * Obtiene un bien por nombre, descripción, precio o stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock
+ * en la base de datos y lo devuelve en formato JSON. Si el bien no se encuentra,
+ * se devuelve un mensaje de error. Si ocurre un error durante la búsqueda,
+ * se devuelve un mensaje de error.
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodByName: RequestHandler = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;
@@ -65,6 +110,21 @@ export const getGoodByName: RequestHandler = async (req, res) => {
     }
 };
 
+/** 
+ * Obtiene un bien por descripción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su descripción en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodbyDescription: RequestHandler = async (req, res) => {
     try {
         const { description } = req.query;
@@ -79,6 +139,22 @@ export const getGoodbyDescription: RequestHandler = async (req, res) => {
     }
 };
 
+
+/**
+ * Obtiene un bien por precio
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su precio en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodByPrice: RequestHandler = async (req, res) => {
     try {
         const { price } = req.query;
@@ -93,6 +169,21 @@ export const getGoodByPrice: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Obtiene un bien por stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su stock en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodByStock: RequestHandler = async (req, res) => {
     try {
         const { stock } = req.query;
@@ -107,7 +198,17 @@ export const getGoodByStock: RequestHandler = async (req, res) => {
     }
 };
 
-// Esta función combina las búsquedas por nombre, descripción, precio y stock en una sola
+/**
+ * Obtiene un bien por nombre, descripción, precio o stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock
+ * en la base de datos y lo devuelve en formato JSON. Si el bien no se encuentra,
+ * se devuelve un mensaje de error. Si ocurre un error durante la búsqueda,
+ * se devuelve un mensaje de error.
+ */
 export const getGoodbyQuery: RequestHandler = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;
@@ -128,7 +229,16 @@ export const getGoodbyQuery: RequestHandler = async (req, res) => {
     }
 };
 
-// Actualizar un bien por ID /goods/:id
+/**
+ * Actualiza un bien por ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su ID, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodById: RequestHandler = async (req, res) => {
     try {
         const { id } = req.params;
@@ -153,6 +263,16 @@ export const updateGoodById: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Actualiza un bien por nombre
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su nombre, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByName: RequestHandler = async (req, res) => {
     try {
       const filter: any = {};
@@ -184,6 +304,16 @@ export const updateGoodByName: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Actualiza un bien por descripción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su descripción, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByDescription: RequestHandler = async (req, res) => {
     try {
         const filter: any = {};
@@ -211,6 +341,16 @@ export const updateGoodByDescription: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Actualiza un bien por precio
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su precio, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByPrice: RequestHandler = async (req, res) => {
     try {
         const filter: any = {};
@@ -238,6 +378,16 @@ export const updateGoodByPrice: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Actualiza un bien por stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su stock, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByStock: RequestHandler = async (req, res) => {
     try {
         const filter: any = {};
@@ -265,6 +415,16 @@ export const updateGoodByStock: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Actualiza un bien por nombre, descripción, precio o stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock,
+ * lo actualiza y lo guarda en la base de datos. Si el bien no se encuentra, se devuelve
+ * un mensaje de error. Si ocurre un error durante la actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByQuery: RequestHandler = async (req, res) => {
     try {
         const filter: any = {};
@@ -295,8 +455,18 @@ export const updateGoodByQuery: RequestHandler = async (req, res) => {
     }
 };
   
-
-// Eliminar un bien por ID /goods/:id
+/**
+ * Elimina un bien por ID y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su ID, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodById: RequestHandler = async (req, res) => {
     try {
         const { id } = req.params;
@@ -304,6 +474,23 @@ export const deleteGoodById: RequestHandler = async (req, res) => {
         if (!good) {
             res.status(404).json({ message: 'Bien no encontrado' });
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (good) {
+            const transactions = await Transaction.find({ 'goods.good': good.name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === good.name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': good.name });
+        } 
         await Good.findByIdAndDelete(id);
         res.json({ message: 'Bien eliminado' });
     } catch (error) {
@@ -311,6 +498,18 @@ export const deleteGoodById: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Elimina un bien por nombre y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su nombre, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByName: RequestHandler = async (req, res) => {   
     try {
         const { name, description, price, stock } = req.query;
@@ -325,6 +524,23 @@ export const deleteGoodByName: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (goods) {
+            const transactions = await Transaction.find({ 'goods.good': goods[0].name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === goods[0].name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': goods[0].name });
+        }
         await Good.deleteMany(query);
         res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {
@@ -332,6 +548,18 @@ export const deleteGoodByName: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Elimina un bien por descripción y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su descripción, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByDescription: RequestHandler = async (req, res) => {
     try {
         const { description } = req.query;
@@ -340,6 +568,23 @@ export const deleteGoodByDescription: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (goods) {
+            const transactions = await Transaction.find({ 'goods.good': goods[0].name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === goods[0].name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': goods[0].name });
+        } 
         await Good.deleteMany({ description });
         res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {
@@ -347,6 +592,18 @@ export const deleteGoodByDescription: RequestHandler = async (req, res) => {
     }
 }
 
+/**
+ * Elimina un bien por precio y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su precio, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByPrice: RequestHandler = async (req, res) => {
     try {
         const { price } = req.query;
@@ -355,6 +612,23 @@ export const deleteGoodByPrice: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (goods) {
+            const transactions = await Transaction.find({ 'goods.good': goods[0].name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === goods[0].name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': goods[0].name });
+        } 
         await Good.deleteMany({ price });
         res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {
@@ -362,6 +636,23 @@ export const deleteGoodByPrice: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Elimina un bien por stock y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su stock, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+*/
 export const deleteGoodByStock: RequestHandler = async (req, res) => {
     try {
         const { stock } = req.query;
@@ -370,6 +661,23 @@ export const deleteGoodByStock: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (goods) {
+            const transactions = await Transaction.find({ 'goods.good': goods[0].name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === goods[0].name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': goods[0].name });
+        } 
         await Good.deleteMany({ stock });
         res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {
@@ -377,6 +685,18 @@ export const deleteGoodByStock: RequestHandler = async (req, res) => {
     }
 };
 
+/**
+ * Elimina un bien por nombre, descripción, precio o stock y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock,
+ * lo elimina y revierte el stock de los bienes involucrados en la transacción. Si el bien
+ * no se encuentra, se devuelve un mensaje de error. Si ocurre un error al eliminar el bien
+ * o revertir el stock, se devuelve un mensaje de error.
+ */
 export const deleteGoodByQuery: RequestHandler = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;
@@ -391,6 +711,23 @@ export const deleteGoodByQuery: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
+        // Revertir el stock de los bienes involucrados en la transacción
+        if (goods) {
+            const transactions = await Transaction.find({ 'goods.good': goods[0].name });
+            for (const transaction of transactions) {
+                for (const item of transaction.goods) {
+                    if (item.good === goods[0].name) {
+                        const goodDoc = await Good.findOne({ name: item.good });
+                        if (goodDoc) {
+                            goodDoc.stock += item.quantity;
+                            await goodDoc.save();
+                        }
+                    }
+                }
+            }
+            // Eliminar la transacción
+            await Transaction.deleteMany({ 'goods.good': goods[0].name });
+        } 
         await Good.deleteMany(query);
         res.json({ message: 'Bien(es) eliminado(s)' });
     } catch (error) {

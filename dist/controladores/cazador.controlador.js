@@ -1,4 +1,5 @@
 import { Hunter } from '../modelos/cazador.modelo.js';
+import { Transaction } from '../modelos/transaccion.modelo.js';
 // Controlador para manejar las operaciones CRUD de cazadores
 // Obtener todos los cazadores
 export const getAllHunters = async (req, res) => {
@@ -101,6 +102,8 @@ export const deleteHunterById = async (req, res) => {
             res.status(404).json({ message: 'Cazador no encontrado' });
             return;
         }
+        // Borramos todas las transacciones asociadas al cazador
+        await Transaction.deleteMany({ name_transactor: deletedHunter.name });
         res.json({ message: 'Cazador eliminado' });
     }
     catch (error) {
@@ -116,6 +119,8 @@ export const deleteHunterByName = async (req, res) => {
             res.status(404).json({ message: 'Cazador no encontrado' });
             return;
         }
+        // Borramos todas las transacciones asociadas al cazador
+        await Transaction.deleteMany({ name_transactor: deletedHunter.name });
         res.json({ message: 'Cazador eliminado' });
     }
     catch (error) {
