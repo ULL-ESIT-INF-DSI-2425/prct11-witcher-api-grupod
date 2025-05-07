@@ -1,13 +1,10 @@
-import mongoose, { Document, Types } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 export interface ITransaction extends Document {
-    buyerType: 'hunter' | 'merchant';
-    buyer: Types.ObjectId;
-    goods: {
-        good: Types.ObjectId;
-        quantity: number;
-    }[];
+    Type: 'hunter' | 'merchant';
+    name_transactor: string;
     totalAmount: number;
-    date: Date;
+    date: string;
+    hour: string;
 }
 export declare const Transaction: mongoose.Model<ITransaction, {}, {}, {}, mongoose.Document<unknown, {}, ITransaction, {}> & ITransaction & Required<{
     _id: unknown;

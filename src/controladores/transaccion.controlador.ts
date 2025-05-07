@@ -1,5 +1,8 @@
 import { RequestHandler } from 'express';
 import { Transaction } from '../modelos/transaccion.modelo.js';
+import { Merchant } from '../modelos/mercader.modelo.js';
+import { Hunter } from '../modelos/cazador.modelo.js';
+import { Good } from '../modelos/bien.modelo.js';
 
 // Controlador para manejar las operaciones CRUD de transacciones
 
@@ -17,33 +20,75 @@ export const getAllTransactions: RequestHandler = async (req, res) => {
   }
 };
 
-// Crear una nueva transacción
 export const createTransaction: RequestHandler = async (req, res) => {
   try {
-    const buyerType = req.body.buyerType;
-    const buyer = req.body.buyer;
-    const goods = req.body.goods;
-    const totalAmount = req.body.totalAmount;
-    const date = req.body.date;
-    const hour = req.body.hour;
-    if (!buyerType || !buyer || !goods || !totalAmount || !date || !hour) {
-      res.status(400).json({ message: 'Tipo de comprador, comprador, bienes, monto total, fecha y hora son obligatorios' });
-      return;
+    const { Type, name_transactor, goods, totalAmount, date, hour } = req.body;
+
+    if (!Type || !name_transactor || !goods || !totalAmount || !date || !hour) {
+       res.status(400).json({ message: 'Todos los campos son obligatorios' });
+       return;
     }
+
+    let transactorDoc;
+
+    // Buscar al transactor según el nombre
+    if (Type === 'hunter') {
+      transactorDoc = await Hunter.findOne({ name: name_transactor });
+    } else if (Type === 'merchant') {
+      transactorDoc = await Merchant.findOne({ name: name_transactor });
+    } else {
+       res.status(400).json({ message: 'Tipo de transactor no válido' });
+       return;
+    }
+    
+    if (!transactorDoc) {
+      console.log("transactor")
+       res.status(404).json({ message: `Transactor no encontrado: ${name_transactor}` });
+       return;
+    }
+
+    let goodsDocs = [];
+
+    // Buscar los bienes según los nombres
+    for (const good of goods) {
+      const goodDoc = await Good.findOne({ name: good.good });
+      if (!goodDoc) {
+        console.log("Bien no encontrado")
+         res.status(404).json({ message: `Bien no encontrado: ${good.good}` });
+         return;
+      }
+      goodsDocs.push({ good: goodDoc.name, quantity: good.quantity });
+    }
+
+    if (goodsDocs.length === 0) {
+       res.status(400).json({ message: 'No se encontraron bienes válidos' });
+       return;
+    }
+
+    // Mantenemos el nombre en lugar de ObjectId
     const newTransaction = new Transaction({
-      buyerType,
-      buyer,
-      goods,
+      Type,
+      name_transactor: transactorDoc.name,  // Aquí guardamos el nombre directamente
+      goods: goodsDocs,
       totalAmount,
       date,
-      hour,
+      hour
     });
+
     const savedTransaction = await newTransaction.save();
-    res.status(201).json(savedTransaction);
+     res.status(201).json(savedTransaction);
+     return
   } catch (error) {
-    res.status(500).json({ message: 'Error creando transacción' });
+    if (error instanceof Error) {
+       res.status(500).json({ message: 'Error creando transacción', error: error.message });
+       return
+    }
+     res.status(500).json({ message: 'Error creando transacción', error: String(error) });
+     return
   }
 };
+
+
 
 // Obtener una transacción por ID
 export const getTransactionById: RequestHandler = async (req, res) => {

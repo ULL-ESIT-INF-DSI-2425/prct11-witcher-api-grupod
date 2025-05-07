@@ -1,18 +1,19 @@
 import mongoose, { Schema } from 'mongoose';
 const TransactionSchema = new Schema({
-    buyerType: {
+    Type: {
         type: String,
         enum: ['hunter', 'merchant'],
         required: true
     },
-    buyer: { type: Schema.Types.ObjectId, required: true, refPath: 'buyerType' },
-    goods: [
-        {
-            good: { type: Schema.Types.ObjectId, ref: 'Good', required: true },
-            quantity: { type: Number, required: true, min: 1 }
-        }
-    ],
+    name_transactor: { type: String, required: true },
+    //goods: [
+    //  {
+    //    good: { type: Schema.Types.ObjectId, required: true, ref: 'Good' },
+    //    quantity: { type: Number, required: true, min: 1 }
+    //  }
+    //],
     totalAmount: { type: Number, required: true, min: 0 },
-    date: { type: Date, default: Date.now }
+    date: { type: String, required: true },
+    hour: { type: String, required: true }
 });
 export const Transaction = mongoose.model('Transaction', TransactionSchema);

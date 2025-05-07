@@ -1,28 +1,30 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface ITransaction extends Document {
-  buyerType: 'hunter' | 'merchant';
-  buyer: Types.ObjectId;
-  goods: { good: Types.ObjectId; quantity: number }[];
+  Type: 'hunter' | 'merchant';
+  name_transactor: string;
+  goods: { good: string; quantity: number }[];
   totalAmount: number;
-  date: Date;
+  date: string;
+  hour: string;
 }
 
 const TransactionSchema = new Schema<ITransaction>({
-  buyerType: {
+  Type: {
     type: String,
     enum: ['hunter', 'merchant'],
     required: true
   },
-  buyer: { type: Schema.Types.ObjectId, required: true, refPath: 'buyerType' },
+  name_transactor: { type: String, required: true },
   goods: [
     {
-      good: { type: Schema.Types.ObjectId, ref: 'Good', required: true },
+      good: { type: String, required: true, ref: 'Good' },
       quantity: { type: Number, required: true, min: 1 }
     }
   ],
   totalAmount: { type: Number, required: true, min: 0 },
-  date: { type: Date, default: Date.now }
+  date: { type: String, required: true },
+  hour: { type: String, required: true }
 });
 
 export const Transaction = mongoose.model<ITransaction>('Transaction', TransactionSchema);
