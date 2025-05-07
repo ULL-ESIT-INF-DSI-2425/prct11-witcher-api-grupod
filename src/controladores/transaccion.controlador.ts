@@ -87,9 +87,7 @@ export const createTransaction: RequestHandler = async (req, res) => {
      return
   }
 };
-
-
-
+ 
 // Obtener una transacción por ID
 export const getTransactionById: RequestHandler = async (req, res) => {
   try {
