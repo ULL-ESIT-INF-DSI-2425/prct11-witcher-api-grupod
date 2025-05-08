@@ -64,7 +64,6 @@ describe('Tests de transacciones', () => {
                 Type: 'hunter',
                 name_transactor: 'Hunter1',
                 goods: [{ good: 'Sword', quantity: 2 }],
-                totalAmount: 400,
                 date: '05-05-2025',
                 hour: '8:00'
             });
@@ -73,7 +72,7 @@ describe('Tests de transacciones', () => {
         expect(res.body.name_transactor).toBe('Hunter1');
         expect(res.body.goods[0].good).toBe('Sword');
         expect(res.body.goods[0].quantity).toBe(2);
-        expect(res.body.totalAmount).toBe(400);
+        expect(res.body.totalAmount).toBe(200);
         expect(res.body.date).toBe('05-05-2025');
         expect(res.body.hour).toBe('8:00');
     });
@@ -89,7 +88,7 @@ describe('Tests de transacciones', () => {
                 date: '05-05-2025'
             });
         expect(res.status).toBe(400);
-        expect(res.body.message).toBe('Todos los campos son obligatorios');
+        expect(res.body.message).toBe('Todos los campos son obligatorios (excepto totalAmount)');
     });
 
     test('debería devolver 404 si el transactor no existe', async () => {
