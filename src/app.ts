@@ -2,7 +2,6 @@
 // Importaciones
 import express from "express";
 import "./config/db.js" // Conexión a la base de datos
-
 import cazadorRoutes from "./rutas/cazador.rutas.js";
 import mercaderRoutes from "./rutas/mercader.rutas.js";
 import bienRoutes from "./rutas/bien.rutas.js";

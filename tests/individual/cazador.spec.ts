@@ -1,7 +1,5 @@
 import request from 'supertest';
-
-import { describe, test, beforeAll, afterAll, beforeEach, expect } from 'vitest';
-
+import { describe, test, afterAll, beforeEach, expect } from 'vitest';
 import {app} from '../../src/app.js';
 import { Hunter } from '../../src/modelos/cazador.modelo.js';
  

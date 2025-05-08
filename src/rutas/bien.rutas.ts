@@ -31,7 +31,6 @@ const router = Router();
  * @route DELETE /api/goods/search/by-stock
  * @route DELETE /api/goods/search/by-all
  */
-
 router.get('/', getAllGoods);
 router.post('/', createGood);
 router.get('/:id', getGoodById);

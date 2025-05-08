@@ -3,6 +3,16 @@ import { Merchant } from '../modelos/mercader.modelo.js';
 import { Hunter } from '../modelos/cazador.modelo.js';
 import { Good } from '../modelos/bien.modelo.js';
 // Controlador para manejar las operaciones CRUD de transacciones
+/**
+ * Crea una nueva transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al crear la transacción
+ * @description Esta función crea una nueva transacción en la base de datos utilizando los datos
+ * proporcionados en la solicitud. Si la transacción se crea con éxito, se devuelve la transacción
+ * creada en formato JSON. Si ocurre un error, se devuelve un mensaje de error.
+ */
 export const createTransaction = async (req, res) => {
     try {
         const { Type, name_transactor, goods, date, hour } = req.body;
@@ -36,6 +46,18 @@ export const createTransaction = async (req, res) => {
             }
             const quantity = item.quantity || 1;
             const subtotal = goodDoc.price * quantity;
+            // Actualizar el stock según el tipo de transacción
+            if (Type === 'hunter') {
+                if (goodDoc.stock < quantity) {
+                    res.status(400).json({ message: `Stock insuficiente para el bien: ${item.good}` });
+                    return;
+                }
+                goodDoc.stock -= quantity;
+            }
+            else if (Type === 'merchant') {
+                goodDoc.stock += quantity;
+            }
+            await goodDoc.save();
             totalAmount += subtotal;
             goodsDocs.push({ good: goodDoc.name, quantity });
         }
@@ -63,7 +85,15 @@ export const createTransaction = async (req, res) => {
         }
     }
 };
-// Obtener todas las transacciones
+/**
+ * Obtiene todas las transacciones
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener las transacciones
+ * @description Esta función busca todas las transacciones en la base de datos y las devuelve
+ * en formato JSON. Si no se encuentran transacciones, se devuelve un mensaje de error.
+ */
 export const getAllTransactions = async (req, res) => {
     try {
         const transactions = await Transaction.find();
@@ -77,7 +107,17 @@ export const getAllTransactions = async (req, res) => {
         res.status(500).json({ message: 'Error buscando transacciones' });
     }
 };
-// Obtener una transacción por ID
+/**
+ * Obtiene una transacción por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener la transacción
+ * @description Esta función busca una transacción en la base de datos utilizando su ID
+ * proporcionado en la solicitud. Si la transacción se encuentra, se devuelve en formato JSON.
+ * Si no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getTransactionById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -92,7 +132,17 @@ export const getTransactionById = async (req, res) => {
         res.status(500).json({ message: 'Error buscando transacción' });
     }
 };
-// Obtener transacciones por comprador
+/**
+ * Obtiene transacciones por el nombre del comprador
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener las transacciones
+ * @description Esta función busca transacciones en la base de datos utilizando el nombre del comprador
+ * proporcionado en la solicitud. Si se encuentran transacciones, se devuelven en formato JSON.
+ * Si no se encuentran, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getTransactionsByBuyer = async (req, res) => {
     try {
         const { buyer } = req.query;
@@ -107,6 +157,17 @@ export const getTransactionsByBuyer = async (req, res) => {
         res.status(500).json({ message: 'Error buscando transacciones' });
     }
 };
+/**
+ * Obtiene transacciones por el nombre del mercader
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener las transacciones
+ * @description Esta función busca transacciones en la base de datos utilizando el nombre del mercader
+ * proporcionado en la solicitud. Si se encuentran transacciones, se devuelven en formato JSON.
+ * Si no se encuentran, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getTransactionsByMerchant = async (req, res) => {
     try {
         const { name_transactor } = req.query;
@@ -121,7 +182,17 @@ export const getTransactionsByMerchant = async (req, res) => {
         res.status(500).json({ message: 'Error buscando transacciones' });
     }
 };
-// Obtener transacciones por fecha
+/**
+ * Obtiene transacciones por fecha
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener las transacciones
+ * @description Esta función busca transacciones en la base de datos utilizando la fecha
+ * proporcionada en la solicitud. Si se encuentran transacciones, se devuelven en formato JSON.
+ * Si no se encuentran, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getTransactionsByDate = async (req, res) => {
     try {
         const { date } = req.query;
@@ -136,7 +207,17 @@ export const getTransactionsByDate = async (req, res) => {
         res.status(500).json({ message: 'Error buscando transacciones' });
     }
 };
-// Actualizar una transacción por ID
+/**
+ * Actualiza una transacción por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar la transacción
+ * @description Esta función actualiza una transacción en la base de datos utilizando el ID
+ * proporcionado en la solicitud. Si la transacción se encuentra, se actualiza con los nuevos
+ * datos proporcionados en el cuerpo de la solicitud. Si no se encuentra, se devuelve un mensaje
+ * de error. Si ocurre un error durante la operación, se devuelve un mensaje de error.
+ */
 export const updateTransactionById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -151,7 +232,17 @@ export const updateTransactionById = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando transacción' });
     }
 };
-// Eliminar una transacción por ID
+/**
+ * Elimina una transacción por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar la transacción
+ * @description Esta función elimina una transacción de la base de datos utilizando el ID
+ * proporcionado en la solicitud. Si la transacción se encuentra, se elimina y se devuelve un
+ * mensaje de éxito. Si no se encuentra, se devuelve un mensaje de error. Si ocurre un error
+ * durante la operación, se devuelve un mensaje de error.
+ */
 export const deleteTransactionById = async (req, res) => {
     try {
         const { id } = req.params;

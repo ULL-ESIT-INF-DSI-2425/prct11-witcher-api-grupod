@@ -1,7 +1,5 @@
 import request from 'supertest';
-
-import { describe, test, beforeAll, afterAll, beforeEach, expect } from 'vitest';
-
+import { describe, test, beforeAll, beforeEach, expect } from 'vitest';
 import { app } from '../../src/app.js';
 import { Transaction } from '../../src/modelos/transaccion.modelo.js';
 import { Merchant } from '../../src/modelos/mercader.modelo.js';

@@ -1,7 +1,16 @@
 import { Hunter } from '../modelos/cazador.modelo.js';
 import { Transaction } from '../modelos/transaccion.modelo.js';
 // Controlador para manejar las operaciones CRUD de cazadores
-// Obtener todos los cazadores
+/**
+ * Obtiene todos los cazadores registrados en la base de datos
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener los cazadores
+ * @description Esta función recupera todos los cazadores almacenados en la base de datos
+ * y los devuelve en formato JSON. Si ocurre un error durante la operación, se devuelve
+ * un mensaje de error.
+ */
 export const getAllHunters = async (req, res) => {
     try {
         const hunters = await Hunter.find();
@@ -11,7 +20,16 @@ export const getAllHunters = async (req, res) => {
         res.status(500).json({ message: 'Error buscando cazadores' });
     }
 };
-// Crear un nuevo cazador
+/**
+ * Crea un nuevo cazador en la base de datos
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al crear el cazador
+ * @description Esta función crea un nuevo cazador en la base de datos utilizando los datos
+ * proporcionados en la solicitud. Si el cazador se crea con éxito, se devuelve el cazador
+ * creado en formato JSON. Si ocurre un error, se devuelve un mensaje de error.
+ */
 export const createHunter = async (req, res) => {
     try {
         const name = req.body.name;
@@ -33,7 +51,17 @@ export const createHunter = async (req, res) => {
         res.status(500).json({ message: 'Error creando cazador' });
     }
 };
-// Obtener un cazador por ID /hunters/:id
+/**
+ * Obtiene un cazador por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener el cazador
+ * @description Esta función busca un cazador en la base de datos utilizando su ID
+ * proporcionado en la solicitud. Si el cazador se encuentra, se devuelve en formato JSON.
+ * Si no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getHunterById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -48,7 +76,17 @@ export const getHunterById = async (req, res) => {
         res.status(500).json({ message: 'Error buscando cazador' });
     }
 };
-// Obtener cazadores por nombre /hunters/search/by-name?name=...
+/**
+ * Obtiene un cazador por su nombre
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al obtener el cazador
+ * @description Esta función busca un cazador en la base de datos utilizando su nombre
+ * proporcionado en la solicitud. Si el cazador se encuentra, se devuelve en formato JSON.
+ * Si no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * operación, se devuelve un mensaje de error.
+ */
 export const getHunterByName = async (req, res) => {
     try {
         const { name } = req.query;
@@ -63,7 +101,18 @@ export const getHunterByName = async (req, res) => {
         res.status(500).json({ message: 'Error buscando cazador' });
     }
 };
-// Actualizar un cazador por ID /hunters/:id
+/**
+ * Actualiza un cazador por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el cazador
+ * @description Esta función actualiza un cazador en la base de datos utilizando su ID
+ * proporcionado en la solicitud. Los nuevos datos del cazador se obtienen del cuerpo de
+ * la solicitud. Si el cazador se actualiza con éxito, se devuelve el cazador actualizado
+ * en formato JSON. Si no se encuentra el cazador, se devuelve un mensaje de error. Si
+ * ocurre un error durante la operación, se devuelve un mensaje de error.
+ */
 export const updateHunterById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -78,7 +127,18 @@ export const updateHunterById = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando cazador' });
     }
 };
-// Actualizar un cazador por nombre /hunters/search/by-name?name=...
+/**
+ * Actualiza un cazador por su nombre
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el cazador
+ * @description Esta función actualiza un cazador en la base de datos utilizando su nombre
+ * proporcionado en la solicitud. Los nuevos datos del cazador se obtienen del cuerpo de
+ * la solicitud. Si el cazador se actualiza con éxito, se devuelve el cazador actualizado
+ * en formato JSON. Si no se encuentra el cazador, se devuelve un mensaje de error. Si
+ * ocurre un error durante la operación, se devuelve un mensaje de error.
+ */
 export const updateHunterByName = async (req, res) => {
     try {
         const { name } = req.query;
@@ -93,7 +153,17 @@ export const updateHunterByName = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando cazador' });
     }
 };
-// Eliminar un cazador por ID /hunters/:id
+/**
+ * Elimina un cazador por su ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el cazador
+ * @description Esta función elimina un cazador de la base de datos utilizando su ID
+ * proporcionado en la solicitud. Si el cazador se elimina con éxito, se devuelve un mensaje
+ * de éxito. Si no se encuentra el cazador, se devuelve un mensaje de error. Si ocurre un
+ * error durante la operación, se devuelve un mensaje de error.
+ */
 export const deleteHunterById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -110,7 +180,17 @@ export const deleteHunterById = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando cazador' });
     }
 };
-// Eliminar un cazador por nombre /hunters/search/by-name?name=...
+/**
+ * Elimina un cazador por su nombre
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el cazador
+ * @description Esta función elimina un cazador de la base de datos utilizando su nombre
+ * proporcionado en la solicitud. Si el cazador se elimina con éxito, se devuelve un mensaje
+ * de éxito. Si no se encuentra el cazador, se devuelve un mensaje de error. Si ocurre un
+ * error durante la operación, se devuelve un mensaje de error.
+ */
 export const deleteHunterByName = async (req, res) => {
     try {
         const { name } = req.query;

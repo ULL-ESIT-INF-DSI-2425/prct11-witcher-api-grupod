@@ -14,18 +14,13 @@ const router = express.Router();
  * @method PUT '/:id' - Actualizar una transacción por ID
  * @method DELETE '/:id' - Eliminar una transacción por ID
 */
-
 router.get('/', transactionController.getAllTransactions);
-
 router.post('/', transactionController.createTransaction);
-
 router.get('/search/by-buyer', transactionController.getTransactionsByBuyer);
 router.get('/search/by-date', transactionController.getTransactionsByDate);
 router.get('/search/by-merchant', transactionController.getTransactionsByMerchant);
 router.get('/:id', transactionController.getTransactionById);
-
 router.put('/:id', transactionController.updateTransactionById);
-
 router.delete('/:id', transactionController.deleteTransactionById);
 
 export default router;

@@ -66,6 +66,7 @@ export const getGoodById: RequestHandler = async (req, res) => {
         const good = await Good.findById(id);
         if (!good) {
             res.status(404).json({ message: 'Bien no encontrado' });
+            return;
         }
         res.json(good);
     } catch (error) {
@@ -401,7 +402,7 @@ export const updateGoodByStock: RequestHandler = async (req, res) => {
         const goods = await Good.find(filter);
         if (!goods || goods.length === 0) {
             res.status(404).json({ message: 'Bien no encontrado' });
-            return
+            return;
         }
         const updatedGoods: any[] = [];
         for (const good of goods) {

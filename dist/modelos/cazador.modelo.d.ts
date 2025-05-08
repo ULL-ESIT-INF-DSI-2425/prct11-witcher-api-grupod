@@ -16,6 +16,11 @@ export interface IHunter extends Document {
     origin?: string;
     createdAt: Date;
 }
+/**
+ * Exporta el modelo de Cazador
+ * @type {Model<IHunter>}
+ * @description Este modelo se utiliza para interactuar con la colección de cazadores en la base de datos.
+ */
 export declare const Hunter: mongoose.Model<IHunter, {}, {}, {}, mongoose.Document<unknown, {}, IHunter, {}> & IHunter & Required<{
     _id: unknown;
 }> & {

@@ -33,4 +33,9 @@ const HunterSchema = new Schema({
         default: Date.now
     }
 });
+/**
+ * Exporta el modelo de Cazador
+ * @type {Model<IHunter>}
+ * @description Este modelo se utiliza para interactuar con la colección de cazadores en la base de datos.
+ */
 export const Hunter = mongoose.model('Hunter', HunterSchema);

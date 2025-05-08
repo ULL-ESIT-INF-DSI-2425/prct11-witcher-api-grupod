@@ -1,7 +1,6 @@
 // File: src/modelos/transaccion.modelo.ts
 import mongoose, { Schema, Document, Types } from 'mongoose';
 
-
 /**
  * Interface para definir la estructura de un objeto transacción.
  * @property {string} Type - Tipo de transacción, puede ser 'hunter' o 'merchant'.
