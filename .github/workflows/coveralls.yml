@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +31,8 @@ jobs:
     - name: Generate coverage info
       run: npm run coverage 
 
-    - name: Coveralls
+    - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@v2.3.6
       with:
-        github-token: ${ { secrets.GITHUB_TOKEN } }
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage/lcov.info
