@@ -109,6 +109,21 @@ export const getGoodByName = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
+/**
+ * Obtiene un bien por descripción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su descripción en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodbyDescription = async (req, res) => {
     try {
         const { description } = req.query;
@@ -123,6 +138,21 @@ export const getGoodbyDescription = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
+/**
+ * Obtiene un bien por precio
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su precio en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodByPrice = async (req, res) => {
     try {
         const { price } = req.query;
@@ -137,6 +167,21 @@ export const getGoodByPrice = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
+/**
+ * Obtiene un bien por stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su stock en la base de datos y lo devuelve
+ * en formato JSON. Si el bien no se encuentra, se devuelve un mensaje de error.
+ * Si ocurre un error durante la búsqueda, se devuelve un mensaje de error.
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+ */
 export const getGoodByStock = async (req, res) => {
     try {
         const { stock } = req.query;
@@ -151,7 +196,17 @@ export const getGoodByStock = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
-// Esta función combina las búsquedas por nombre, descripción, precio y stock en una sola
+/**
+ * Obtiene un bien por nombre, descripción, precio o stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al buscar el bien
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock
+ * en la base de datos y lo devuelve en formato JSON. Si el bien no se encuentra,
+ * se devuelve un mensaje de error. Si ocurre un error durante la búsqueda,
+ * se devuelve un mensaje de error.
+ */
 export const getGoodbyQuery = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;
@@ -175,7 +230,16 @@ export const getGoodbyQuery = async (req, res) => {
         res.status(500).json({ message: 'Error buscando bien' });
     }
 };
-// Actualizar un bien por ID /goods/:id
+/**
+ * Actualiza un bien por ID
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su ID, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -204,6 +268,16 @@ export const updateGoodById = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+/**
+ * Actualiza un bien por nombre
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su nombre, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByName = async (req, res) => {
     try {
         const filter = {};
@@ -236,6 +310,16 @@ export const updateGoodByName = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+/**
+ * Actualiza un bien por descripción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su descripción, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByDescription = async (req, res) => {
     try {
         const filter = {};
@@ -268,6 +352,16 @@ export const updateGoodByDescription = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+/**
+ * Actualiza un bien por precio
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su precio, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByPrice = async (req, res) => {
     try {
         const filter = {};
@@ -300,6 +394,16 @@ export const updateGoodByPrice = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+/**
+ * Actualiza un bien por stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su stock, lo actualiza y lo guarda en la base de datos.
+ * Si el bien no se encuentra, se devuelve un mensaje de error. Si ocurre un error durante la
+ * actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByStock = async (req, res) => {
     try {
         const filter = {};
@@ -332,6 +436,16 @@ export const updateGoodByStock = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando bien' });
     }
 };
+/**
+ * Actualiza un bien por nombre, descripción, precio o stock
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al actualizar el bien
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock,
+ * lo actualiza y lo guarda en la base de datos. Si el bien no se encuentra, se devuelve
+ * un mensaje de error. Si ocurre un error durante la actualización, se devuelve un mensaje de error.
+ */
 export const updateGoodByQuery = async (req, res) => {
     try {
         const filter = {};
@@ -413,6 +527,18 @@ export const deleteGoodById = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando bien' });
     }
 };
+/**
+ * Elimina un bien por nombre y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su nombre, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByName = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;
@@ -454,6 +580,18 @@ export const deleteGoodByName = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando bien' });
     }
 };
+/**
+ * Elimina un bien por descripción y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su descripción, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByDescription = async (req, res) => {
     try {
         const { description } = req.query;
@@ -486,6 +624,18 @@ export const deleteGoodByDescription = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando bien' });
     }
 };
+/**
+ * Elimina un bien por precio y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su precio, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ */
 export const deleteGoodByPrice = async (req, res) => {
     try {
         const { price } = req.query;
@@ -518,6 +668,23 @@ export const deleteGoodByPrice = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando bien' });
     }
 };
+/**
+ * Elimina un bien por stock y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su stock, lo elimina y revierte el stock
+ * de los bienes involucrados en la transacción. Si el bien no se encuentra, se devuelve un
+ * mensaje de error. Si ocurre un error al eliminar el bien o revertir el stock, se devuelve
+ * un mensaje de error.
+ * @param {number} req.query.stock - El stock del bien a buscar
+ * @param {string} req.query.name - El nombre del bien a buscar
+ * @param {string} req.query.description - La descripción del bien a buscar
+ * @param {number} req.query.price - El precio del bien a buscar
+ * @param {string} req.query.id - El ID del bien a buscar
+*/
 export const deleteGoodByStock = async (req, res) => {
     try {
         const { stock } = req.query;
@@ -550,6 +717,18 @@ export const deleteGoodByStock = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando bien' });
     }
 };
+/**
+ * Elimina un bien por nombre, descripción, precio o stock y revierte el stock de los bienes
+ * involucrados en la transacción
+ * @param {Request} req - La solicitud HTTP
+ * @param {Response} res - La respuesta HTTP
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la operación
+ * @throws {Error} - Si ocurre un error al eliminar el bien o revertir el stock
+ * @description Esta función busca un bien por su nombre, descripción, precio o stock,
+ * lo elimina y revierte el stock de los bienes involucrados en la transacción. Si el bien
+ * no se encuentra, se devuelve un mensaje de error. Si ocurre un error al eliminar el bien
+ * o revertir el stock, se devuelve un mensaje de error.
+ */
 export const deleteGoodByQuery = async (req, res) => {
     try {
         const { name, description, price, stock } = req.query;

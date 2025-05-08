@@ -1,7 +1,14 @@
 import { Merchant } from '../modelos/mercader.modelo.js';
 import { Transaction } from '../modelos/transaccion.modelo.js';
 // Controlador para manejar las operaciones CRUD de mercaderes
-// Obtener todos los mercaderes
+/**
+ * Controlador para obtener todos los mercaderes
+ * @param req - Request
+ * @param res - Response
+ * @returns - Lista de mercaderes
+ * @throws - 404 si no se encuentran mercaderes
+ * @throws - 500 si hay un error al obtener los mercaderes
+ */
 export const getAllMerchants = async (req, res) => {
     try {
         const merchants = await Merchant.find();
@@ -15,7 +22,14 @@ export const getAllMerchants = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los mercaderes' });
     }
 };
-// Crear un nuevo mercader
+/**
+ * Controlador para crear un nuevo mercader
+ * @param req - Request
+ * @param res - Response
+ * @returns - El mercader creado
+ * @throws - 400 si faltan campos obligatorios
+ * @throws - 500 si hay un error al crear el mercader
+ */
 export const createMerchant = async (req, res) => {
     try {
         const name = req.body.name;
@@ -33,7 +47,14 @@ export const createMerchant = async (req, res) => {
         res.status(500).json({ message: 'Error creando mercader' });
     }
 };
-// Obtener un mercader por ID /merchants/:id
+/**
+ * Controlador para obtener un mercader por ID
+ * @param req - Request
+ * @param res - Response
+ * @returns - El mercader encontrado
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al obtener el mercader
+ */
 export const getMerchantById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -48,7 +69,14 @@ export const getMerchantById = async (req, res) => {
         res.status(500).json({ message: 'Error buscando mercader' });
     }
 };
-// Obtener mercaderes por nombre /merchants/search/by-name?name=...
+/**
+ * Controlador para obtener un mercader por nombre
+ * @param req - Request
+ * @param res - Response
+ * @returns - El mercader encontrado
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al obtener el mercader
+ */
 export const getMerchantByName = async (req, res) => {
     try {
         const { name } = req.query;
@@ -64,7 +92,14 @@ export const getMerchantByName = async (req, res) => {
         res.status(500).json({ message: 'Error buscando mercaderes' });
     }
 };
-// Actualizar un mercader por ID /merchants/:id
+/**
+ * Controlador para actualizar un mercader por ID
+ * @param req - Request
+ * @param res - Response
+ * @returns - El mercader actualizado
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al actualizar el mercader
+ */
 export const updateMerchantById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -79,7 +114,14 @@ export const updateMerchantById = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando mercader' });
     }
 };
-// Actualizar un mercader por nombre /merchants/search/by-name?name=...
+/**
+ * Controlador para actualizar un mercader por nombre
+ * @param req - Request
+ * @param res - Response
+ * @returns - El mercader actualizado
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al actualizar el mercader
+ */
 export const updateMerchantByName = async (req, res) => {
     try {
         const { name } = req.query;
@@ -95,7 +137,14 @@ export const updateMerchantByName = async (req, res) => {
         res.status(500).json({ message: 'Error actualizando mercader' });
     }
 };
-// Eliminar un mercader por ID /merchants/:id
+/**
+ * Controlador para eliminar un mercader por ID
+ * @param req - Request
+ * @param res - Response
+ * @returns - Mensaje de éxito
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al eliminar el mercader
+ */
 export const deleteMerchantById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -112,7 +161,14 @@ export const deleteMerchantById = async (req, res) => {
         res.status(500).json({ message: 'Error eliminando mercader' });
     }
 };
-// Eliminar un mercader por nombre /merchants/search/by-name?name=...
+/**
+ * Controlador para eliminar un mercader por nombre
+ * @param req - Request
+ * @param res - Response
+ * @returns - Mensaje de éxito
+ * @throws - 404 si no se encuentra el mercader
+ * @throws - 500 si hay un error al eliminar el mercader
+ */
 export const deleteMerchantByName = async (req, res) => {
     try {
         const { name } = req.query;
