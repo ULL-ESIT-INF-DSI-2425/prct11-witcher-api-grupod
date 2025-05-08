@@ -291,7 +291,7 @@ export const updateGoodByName: RequestHandler = async (req, res) => {
         return;
       }
   
-      const updatedGoods = [];
+      const updatedGoods: any[] = [];
       for (const good of goods) {
         Object.assign(good, update);
         await good.save();
@@ -329,7 +329,7 @@ export const updateGoodByDescription: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
-        const updatedGoods = [];
+        const updatedGoods: any[] = [];
         for (const good of goods) {
             Object.assign(good, update);
             await good.save();
@@ -366,7 +366,7 @@ export const updateGoodByPrice: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
-        const updatedGoods = [];
+        const updatedGoods: any[] = [];
         for (const good of goods) {
             Object.assign(good, update);
             await good.save();
@@ -403,7 +403,7 @@ export const updateGoodByStock: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return
         }
-        const updatedGoods = [];
+        const updatedGoods: any[] = [];
         for (const good of goods) {
             Object.assign(good, update);
             await good.save();
@@ -443,7 +443,7 @@ export const updateGoodByQuery: RequestHandler = async (req, res) => {
             res.status(404).json({ message: 'Bien no encontrado' });
             return;
         }
-        const updatedGoods = [];
+        const updatedGoods: any[] = [];
         for (const good of goods) {
             Object.assign(good, update);
             await good.save();

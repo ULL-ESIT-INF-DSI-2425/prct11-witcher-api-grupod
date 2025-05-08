@@ -32,7 +32,7 @@ export const createTransaction: RequestHandler = async (req, res) => {
       return;
     }
 
-    let goodsDocs = [];
+    let goodsDocs: { good: string; quantity: number }[] = [];
     let totalAmount = 0;
 
     for (const item of goods) {
@@ -42,8 +42,21 @@ export const createTransaction: RequestHandler = async (req, res) => {
         return;
       }
 
-      const quantity = item.quantity || 1;
+      const quantity: number = item.quantity || 1;
       const subtotal = goodDoc.price * quantity;
+
+      // Actualizar el stock según el tipo de transacción
+      if (Type === 'hunter') {
+        if (goodDoc.stock < quantity) {
+          res.status(400).json({ message: `Stock insuficiente para el bien: ${item.good}` });
+          return;
+        }
+        goodDoc.stock -= quantity;
+      } else if (Type === 'merchant') {
+        goodDoc.stock += quantity;
+      }
+
+      await goodDoc.save();
 
       totalAmount += subtotal;
       goodsDocs.push({ good: goodDoc.name, quantity });
